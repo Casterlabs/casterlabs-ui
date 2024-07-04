@@ -86,22 +86,74 @@
 	});
 </script>
 
-<InternalInput
-	bind:inputElement
-	type="range"
-	borderless={true}
-	properties={{
-		min: min,
-		max: max,
-		step: step,
-		readonly: readOnly,
-		inputmode: 'numeric',
-		pattern: 'd*'
-	}}
-	{...$$restProps}
-/>
+<div class="clui-input-range-container" style:width={sizeToCSS($$restProps.width)}>
+	<div class="clui-input-range-sister" aria-hidden="true" style:padding={sizeToCSS($$restProps.padding || 0.5)}>
+		<NumberInput bind:value {...$$restProps} width="full" borderless={true} padding={0} />
+		<div class="clui-input-range-sister-dummy">
+			<!-- We use this as a calculation for the width of this part. -->
+			{value}
+		</div>
+	</div>
+
+	{#if $$slots.default}
+		<div style="margin-right: 2px;" style:padding-top={sizeToCSS($$restProps.padding || 0.5)}>
+			<slot />
+		</div>
+	{/if}
+
+	<InternalInput
+		bind:inputElement
+		type="range"
+		borderless={true}
+		properties={{
+			min: min,
+			max: max,
+			step: step,
+			readonly: readOnly,
+			inputmode: 'numeric',
+			pattern: 'd*'
+		}}
+		{...$$restProps}
+		width="full"
+	/>
+</div>
 
 <style>
+	.clui-input-range-container {
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.clui-input-range-sister {
+		/* overflow: hidden; */
+		width: min-content;
+		height: 1rem;
+		padding-bottom: 0.35rem !important;
+		border-bottom-width: 1px;
+		border-bottom-style: solid;
+		border-bottom-color: var(--base-7);
+	}
+
+	.clui-input-range-sister-dummy {
+		display: block;
+		overflow-y: hidden;
+		height: 0;
+		/* This is gross, I hate it. */
+		font-size: 0.85rem;
+		font-family: serif;
+		letter-spacing: 0.04rem;
+	}
+
+	:global(.clui-input-range-sister .clui-input[type='number']) {
+		appearance: textfield;
+		text-align: right;
+	}
+	:global(.clui-input-range-sister .clui-input[type='number']::-webkit-outer-spin-button),
+	:global(.clui-input-range-sister .clui-input[type='number']::-webkit-inner-spin-button) {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
 	:global(.clui-input[type='range']) {
 		appearance: none;
 		background: transparent;

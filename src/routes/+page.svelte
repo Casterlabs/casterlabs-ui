@@ -4,6 +4,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import NumberInput from '$lib/components/form/NumberInput.svelte';
 	import RangeInput from '$lib/components/form/RangeInput.svelte';
+	import RangeInputWithSister from '$lib/components/form/RangeInputWithSister.svelte';
 
 	import { registerProvider } from '$lib/icons.js';
 
@@ -29,6 +30,10 @@
 		<NumberInput bind:value={numberInputTest} height={6} width={42} roundness="md" placeholder="Pick a number, any number" />
 		<br />
 		<RangeInput bind:value={numberInputTest} height={6} width={42} roundness="md" />
+		<br />
+		<RangeInputWithSister bind:value={numberInputTest} height={6} width={42} roundness="md">
+			<span style:font-size=".75rem">cm</span>
+		</RangeInputWithSister>
 		<br />
 		<br />
 		Your number: {numberInputTest}<button on:click={() => numberInputTest++}>+</button>
