@@ -2,9 +2,10 @@
 	import Box from '$lib/components/Box.svelte';
 	import Root from '$lib/components/Root.svelte';
 	import Icon from '$lib/components/Icon.svelte';
+	import NumberInput from '$lib/components/form/NumberInput.svelte';
+	import RangeInput from '$lib/components/form/RangeInput.svelte';
 
 	import { registerProvider } from '$lib/icons.js';
-	import NumberInput from '$lib/components/form/NumberInput.svelte';
 
 	registerProvider('example', (name) => {
 		switch (name) {
@@ -19,15 +20,29 @@
 				throw 'Unknown icon';
 		}
 	});
+
+	let numberInputTest = 69;
 </script>
 
 <Root>
-	<Box resize="none" width={96} height={24} roundness="md">
-		Boxes contain things <NumberInput height={6} roundness="md" placeholder="A number" />
+	<Box resize="none" width={96} height="fit" roundness="md">
+		<NumberInput bind:value={numberInputTest} height={6} width={42} roundness="md" placeholder="Pick a number, any number" />
+		<br />
+		<RangeInput bind:value={numberInputTest} height={6} width={42} roundness="md" />
+		<br />
+		<br />
+		Your number: {numberInputTest}<button on:click={() => numberInputTest++}>+</button>
 	</Box>
+	<br />
 	<Box resize="both" width={96} height={24} roundness="md">
-		Boxes can be resized
+		Boxes can (optionally) be resized
 		<Icon icon="example/academic-cap" transform="rotate3d(1, 1, 1, 45deg)" />
 		<Icon icon="example/academic-cap" color="accent-9" />
 	</Box>
 </Root>
+
+<style>
+	:global(body) {
+		font-family: sans-serif;
+	}
+</style>
