@@ -59,6 +59,10 @@
 			});
 		});
 
+		inputElement.addEventListener('change', () => {
+			dispatch('update-unfocused', value);
+		});
+
 		inputElement.addEventListener(
 			'wheel',
 			(event) => {
