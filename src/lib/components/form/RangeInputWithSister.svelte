@@ -22,6 +22,7 @@
 	export let min = NaN;
 	export let max = NaN;
 	export let step = 1;
+	min && max && step; // Silence typescript.
 
 	export let ID: string = '';
 </script>
