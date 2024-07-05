@@ -5,6 +5,7 @@
 	import NumberInput from '$lib/components/form/NumberInput.svelte';
 	import RangeInput from '$lib/components/form/RangeInput.svelte';
 	import RangeInputWithSister from '$lib/components/form/RangeInputWithSister.svelte';
+	import CheckboxInput from '$lib/components/form/CheckboxInput.svelte';
 
 	import { registerProvider } from '$lib/icons.js';
 
@@ -34,6 +35,14 @@
 		<RangeInputWithSister bind:value={numberInputTest} height={6} width={42} roundness="md">
 			<span style:font-size=".75rem">cm</span>
 		</RangeInputWithSister>
+		<br />
+		<CheckboxInput value={true} readOnly={true}>
+			<svelte:fragment slot="label">Sell your soul to SvelteKit?</svelte:fragment>
+		</CheckboxInput>
+		<br />
+		<CheckboxInput value={true} roundness="none">
+			<svelte:fragment slot="label">Receive email Updates?</svelte:fragment>
+		</CheckboxInput>
 		<br />
 		<br />
 		Your number: {numberInputTest}<button on:click={() => numberInputTest++}>+</button>
