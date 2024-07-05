@@ -13,7 +13,6 @@
 		max?: number;
 		step?: number;
 		placeholder?: string;
-		readOnly?: boolean;
 	}
 
 	const dispatch = createEventDispatcher();
@@ -24,7 +23,6 @@
 	export let max = NaN;
 	export let step = 1;
 	export let placeholder = '';
-	export let readOnly = false;
 
 	export let inputElement: HTMLInputElement | null = null;
 
@@ -92,7 +90,6 @@
 		max: max,
 		step: step,
 		placeholder,
-		readonly: readOnly,
 		inputmode: 'numeric',
 		pattern: 'd*'
 	}}

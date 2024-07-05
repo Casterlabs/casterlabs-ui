@@ -7,6 +7,7 @@
 	export let properties: { [key: string]: any } = {};
 
 	export let borderless = false;
+	export let readOnly = false;
 	export let resize: ResizeProperty = 'none';
 	export let width: SizeProperty = 'fit';
 	export let height: SizeProperty = 'fit';
@@ -47,6 +48,8 @@
 	style:padding={sizeToCSS(padding)}
 	style:border-radius={roundnessToCSS(roundness)}
 	style:transform
+	readonly={readOnly}
+	disabled={readOnly}
 />
 
 <style>

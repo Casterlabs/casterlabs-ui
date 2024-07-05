@@ -12,7 +12,6 @@
 		min?: number;
 		max?: number;
 		step?: number;
-		readOnly?: boolean;
 	}
 
 	const dispatch = createEventDispatcher();
@@ -22,7 +21,6 @@
 	export let min = NaN;
 	export let max = NaN;
 	export let step = 1;
-	export let readOnly = false;
 
 	export let inputElement: HTMLInputElement | null = null;
 
@@ -66,7 +64,7 @@
 			(event) => {
 				if (!inputElement) return;
 				if (document.activeElement != inputElement) return; // We don't have focus.
-				if (readOnly) return; // Don't.
+				if (inputElement.disabled) return; // Don't.
 
 				if (event.deltaY != 0 && event.deltaY != -0) {
 					if (event.deltaY > 1) {
@@ -96,7 +94,6 @@
 		min: min,
 		max: max,
 		step: step,
-		readonly: readOnly,
 		inputmode: 'numeric',
 		pattern: 'd*'
 	}}
