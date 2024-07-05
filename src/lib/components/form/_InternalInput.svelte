@@ -36,7 +36,7 @@
 	export let resize: ResizeProperty = 'none';
 	export let width: SizeProperty = 'fit';
 	export let height: SizeProperty = 'fit';
-	export let padding: SizeProperty = 0.5;
+	export let padding: SizeProperty = 1.5;
 	export let roundness: RoundnessProperty = 'none';
 	export let transform = '';
 

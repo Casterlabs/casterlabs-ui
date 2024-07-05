@@ -31,13 +31,13 @@
 		<Box resize="none" width={64} height="fit" roundness="md" inline={true} verticalAlign="top">
 			<h2 style:text-align="center" style:margin-top=".25rem">Number-ish Inputs</h2>
 			<div style:font-size="small">
-				<NumberInput bind:value={numberInputTest} height={6} width={36} roundness="md" placeholder="Pick a number, any number">
+				<NumberInput bind:value={numberInputTest} width={36} roundness="md" placeholder="Pick a number, any number">
 					<svelte:fragment slot="label">Number:</svelte:fragment>
 				</NumberInput>
-				<RangeInput bind:value={numberInputTest} height={6} width={36} roundness="md">
+				<RangeInput bind:value={numberInputTest} width={36} roundness="md">
 					<svelte:fragment slot="label">Range:</svelte:fragment>
 				</RangeInput>
-				<RangeInputWithSister bind:value={numberInputTest} height={6} width={36} roundness="md">
+				<RangeInputWithSister bind:value={numberInputTest} width={36} roundness="md">
 					<svelte:fragment slot="label">Range with unit:</svelte:fragment>
 					<span slot="unit">cm</span>
 				</RangeInputWithSister>
