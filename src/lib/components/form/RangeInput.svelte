@@ -1,18 +1,16 @@
 <script lang="ts">
-	import InternalInput from './_InternalInput.svelte';
+	import InternalInput, { type StandardInputProps } from './_InternalInput.svelte';
 
-	import { onMount, createEventDispatcher } from 'svelte';
-	import Debouncer from '$lib/debouncer.js';
-
-	// Inherit properties from InternalInput.
-	import { type ComponentProps } from 'svelte';
-	interface $$Props extends ComponentProps<InternalInput> {
+	interface $$Props extends StandardInputProps {
 		// We now have to manually specify our own props. That's what we get :P
 		value?: number;
 		min?: number;
 		max?: number;
 		step?: number;
 	}
+
+	import { onMount, createEventDispatcher } from 'svelte';
+	import Debouncer from '$lib/debouncer.js';
 
 	const dispatch = createEventDispatcher();
 	const debouncer = new Debouncer();

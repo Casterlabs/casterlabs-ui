@@ -1,10 +1,34 @@
+<script context="module" lang="ts">
+	export type StandardInputProps = {
+		borderless?: boolean;
+		readOnly?: boolean;
+		resize?: ResizeProperty;
+		width?: SizeProperty;
+		height?: SizeProperty;
+		padding?: SizeProperty;
+		roundness?: RoundnessProperty;
+		transform?: string;
+	};
+</script>
+
 <script lang="ts">
 	import { roundnessToCSS, sizeToCSS } from '$lib/helper.js';
 	import type { ResizeProperty, RoundnessProperty, SizeProperty } from '$lib/helper.js';
 
+	const ID = `clui-input-${Math.random().toString(28).substring('.0'.length)}`;
+
+	interface $$Props extends StandardInputProps {
+		// We now have to manually specify our own props. That's what we get :P
+		inputElement: HTMLInputElement | null;
+		type: string;
+		properties?: { [key: string]: any };
+		hasLabel?: boolean;
+	}
+
 	export let inputElement: HTMLInputElement | null = null;
 	export let type: string = 'input';
 	export let properties: { [key: string]: any } = {};
+	export let hasLabel = false;
 
 	export let borderless = false;
 	export let readOnly = false;
@@ -37,20 +61,28 @@
 		})();
 </script>
 
-<input
-	bind:this={inputElement}
-	{type}
-	class="clui-input"
-	class:borderless
-	style:resize
-	style:width={sizeToCSS(width)}
-	style:height={sizeToCSS(height)}
-	style:padding={sizeToCSS(padding)}
-	style:border-radius={roundnessToCSS(roundness)}
-	style:transform
-	readonly={readOnly}
-	disabled={readOnly}
-/>
+<span>
+	{#if hasLabel}
+		<label for={ID}>
+			<slot name="label" />
+		</label>
+	{/if}
+	<input
+		id={ID}
+		bind:this={inputElement}
+		{type}
+		class="clui-input"
+		class:borderless
+		style:resize
+		style:width={sizeToCSS(width)}
+		style:height={sizeToCSS(height)}
+		style:padding={sizeToCSS(padding)}
+		style:border-radius={roundnessToCSS(roundness)}
+		style:transform
+		readonly={readOnly}
+		disabled={readOnly}
+	/>
+</span>
 
 <style>
 	.clui-input {
