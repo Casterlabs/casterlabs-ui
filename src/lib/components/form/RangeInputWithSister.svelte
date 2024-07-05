@@ -114,7 +114,12 @@
 		}}
 		{...$$restProps}
 		width="full"
-	/>
+		hasLabel={$$slots.label}
+	>
+		<svelte:fragment slot="label">
+			<slot name="label" />
+		</svelte:fragment>
+	</InternalInput>
 </div>
 
 <style>

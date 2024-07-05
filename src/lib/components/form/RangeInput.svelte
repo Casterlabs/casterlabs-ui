@@ -96,7 +96,12 @@
 		pattern: 'd*'
 	}}
 	{...$$restProps}
-/>
+	hasLabel={$$slots.label}
+>
+	<svelte:fragment slot="label">
+		<slot name="label" />
+	</svelte:fragment>
+</InternalInput>
 
 <style>
 	:global(.clui-input[type='range']) {
