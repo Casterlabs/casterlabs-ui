@@ -6,6 +6,7 @@
 	import RangeInput from '$lib/components/form/RangeInput.svelte';
 	import RangeInputWithSister from '$lib/components/form/RangeInputWithSister.svelte';
 	import CheckboxInput from '$lib/components/form/CheckboxInput.svelte';
+	import TextInput from '$lib/components/form/TextInput.svelte';
 
 	import { registerProvider } from '$lib/icons.js';
 
@@ -41,6 +42,26 @@
 					<svelte:fragment slot="label">Range with unit:</svelte:fragment>
 					<span slot="unit">cm</span>
 				</RangeInputWithSister>
+			</div>
+		</Box>
+		<Box resize="none" width={90} height="fit" roundness="md" inline={true} verticalAlign="top">
+			<h2 style:text-align="center" style:margin-top=".25rem">Text Inputs</h2>
+			<div style:font-size="small">
+				<TextInput placeholder="Type something here" roundness="md">
+					<svelte:fragment slot="label">Tell me your deepest secret:</svelte:fragment>
+				</TextInput>
+				<br />
+				<TextInput type="password" placeholder="FishName!12" roundness="md">
+					<svelte:fragment slot="label">Password:</svelte:fragment>
+				</TextInput>
+				<br />
+				<TextInput type="search" placeholder="I'm feeling lucky..." roundness="md">
+					<svelte:fragment slot="label">Search:</svelte:fragment>
+				</TextInput>
+				<br />
+				<TextInput type="tel" placeholder="+1 (555) 555-5555" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" inputMode="numeric" roundness="md">
+					<svelte:fragment slot="label">Phone #:</svelte:fragment>
+				</TextInput>
 			</div>
 		</Box>
 		<Box resize="none" width={52} height="fit" roundness="md" inline={true} verticalAlign="top">
