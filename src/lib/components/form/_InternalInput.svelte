@@ -15,8 +15,6 @@
 	import { roundnessToCSS, sizeToCSS } from '$lib/helper.js';
 	import type { ResizeProperty, RoundnessProperty, SizeProperty } from '$lib/helper.js';
 
-	const ID = `clui-input-${Math.random().toString(28).substring('.0'.length)}`;
-
 	interface $$Props extends StandardInputProps {
 		// We now have to manually specify our own props. That's what we get :P
 		inputElement: HTMLInputElement | null;
@@ -24,6 +22,8 @@
 		properties?: { [key: string]: any };
 		hasLabel?: boolean;
 	}
+
+	export const ID = `clui-input-${Math.random().toString(28).substring('.0'.length)}`;
 
 	export let inputElement: HTMLInputElement | null = null;
 	export let type: string = 'input';
@@ -61,12 +61,28 @@
 		})();
 </script>
 
-<span>
-	{#if hasLabel}
-		<label for={ID}>
+{#if hasLabel}
+	<div class="clui-input-label-container">
+		<label for={ID} class="clui-input-label">
 			<slot name="label" />
 		</label>
-	{/if}
+		<input
+			id={ID}
+			bind:this={inputElement}
+			{type}
+			class="clui-input"
+			class:borderless
+			style:resize
+			style:width={sizeToCSS(width)}
+			style:height={sizeToCSS(height)}
+			style:padding={sizeToCSS(padding)}
+			style:border-radius={roundnessToCSS(roundness)}
+			style:transform
+			readonly={readOnly}
+			disabled={readOnly}
+		/>
+	</div>
+{:else}
 	<input
 		id={ID}
 		bind:this={inputElement}
@@ -82,15 +98,26 @@
 		readonly={readOnly}
 		disabled={readOnly}
 	/>
-</span>
+{/if}
 
 <style>
+	.clui-input-label-container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.clui-input-label {
+		vertical-align: middle;
+	}
+
 	.clui-input {
 		box-sizing: border-box;
 		overflow: auto;
 		border: none;
 		background-color: transparent;
 		color: currentColor;
+		vertical-align: middle;
 	}
 	.clui-input:not(.borderless) {
 		border-width: 1px;

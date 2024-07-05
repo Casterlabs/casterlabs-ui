@@ -23,6 +23,7 @@
 	export let step = 1;
 
 	export let inputElement: HTMLInputElement | null = null;
+	let ID: string;
 
 	$: value,
 		(() => {
@@ -86,43 +87,92 @@
 	});
 </script>
 
-<div class="clui-input-range-container" style:width={sizeToCSS($$restProps.width)}>
-	<div class="clui-input-range-sister" aria-hidden="true" style:padding={sizeToCSS($$restProps.padding || 0.5)}>
-		<NumberInput bind:value {...$$restProps} width="full" borderless={true} padding={0} />
-		<div class="clui-input-range-sister-dummy">
-			<!-- We use this as a calculation for the width of this part. -->
-			{value}
+<!-- I hate having to repeat myself like this. Oh well. -->
+{#if $$slots.label}
+	<div class="clui-input-label-container">
+		<label for={ID} class="clui-input-label">
+			<slot name="label" />
+		</label>
+
+		<div class="clui-input-range-container" style:width={sizeToCSS($$restProps.width)}>
+			<div class="clui-input-range-sister" aria-hidden="true" style:padding={sizeToCSS($$restProps.padding || 0.5)}>
+				<NumberInput bind:value {...$$restProps} width="full" borderless={true} padding={0} />
+				<div class="clui-input-range-sister-dummy">
+					<!-- We use this as a calculation for the width of this part. -->
+					{value}
+				</div>
+			</div>
+
+			{#if $$slots.unit}
+				<div style="margin-right: 2px;" style:padding-top={sizeToCSS($$restProps.padding || 0.5)}>
+					<slot name="unit" />
+				</div>
+			{/if}
+
+			<InternalInput
+				bind:ID
+				bind:inputElement
+				type="range"
+				borderless={true}
+				properties={{
+					min: min,
+					max: max,
+					step: step,
+					inputmode: 'numeric',
+					pattern: 'd*'
+				}}
+				{...$$restProps}
+				width="full"
+				hasLabel={false}
+			/>
 		</div>
 	</div>
-
-	{#if $$slots.default}
-		<div style="margin-right: 2px;" style:padding-top={sizeToCSS($$restProps.padding || 0.5)}>
-			<slot />
+{:else}
+	<div class="clui-input-range-container" style:width={sizeToCSS($$restProps.width)}>
+		<div class="clui-input-range-sister" aria-hidden="true" style:padding={sizeToCSS($$restProps.padding || 0.5)}>
+			<NumberInput bind:value {...$$restProps} width="full" borderless={true} padding={0} />
+			<div class="clui-input-range-sister-dummy">
+				<!-- We use this as a calculation for the width of this part. -->
+				{value}
+			</div>
 		</div>
-	{/if}
 
-	<InternalInput
-		bind:inputElement
-		type="range"
-		borderless={true}
-		properties={{
-			min: min,
-			max: max,
-			step: step,
-			inputmode: 'numeric',
-			pattern: 'd*'
-		}}
-		{...$$restProps}
-		width="full"
-		hasLabel={$$slots.label}
-	>
-		<svelte:fragment slot="label">
-			<slot name="label" />
-		</svelte:fragment>
-	</InternalInput>
-</div>
+		{#if $$slots.unit}
+			<div style="margin-right: 2px;" style:padding-top={sizeToCSS($$restProps.padding || 0.5)}>
+				<slot name="unit" />
+			</div>
+		{/if}
+
+		<InternalInput
+			bind:ID
+			bind:inputElement
+			type="range"
+			borderless={true}
+			properties={{
+				min: min,
+				max: max,
+				step: step,
+				inputmode: 'numeric',
+				pattern: 'd*'
+			}}
+			{...$$restProps}
+			width="full"
+			hasLabel={false}
+		/>
+	</div>
+{/if}
 
 <style>
+	.clui-input-label-container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.clui-input-label {
+		vertical-align: middle;
+	}
+
 	.clui-input-range-container {
 		display: inline-flex;
 		align-items: center;

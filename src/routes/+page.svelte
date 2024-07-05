@@ -27,32 +27,39 @@
 </script>
 
 <Root>
-	<Box resize="none" width={96} height="fit" roundness="md">
-		<NumberInput bind:value={numberInputTest} height={6} width={42} roundness="md" placeholder="Pick a number, any number" />
-		<br />
-		<RangeInput bind:value={numberInputTest} height={6} width={42} roundness="md" />
-		<br />
-		<RangeInputWithSister bind:value={numberInputTest} height={6} width={42} roundness="md">
-			<span style:font-size=".75rem">cm</span>
-		</RangeInputWithSister>
-		<br />
-		<CheckboxInput value={true} readOnly={true}>
-			<svelte:fragment slot="label">Sell your soul to SvelteKit?</svelte:fragment>
-		</CheckboxInput>
-		<br />
-		<CheckboxInput value={true} roundness="none">
-			<svelte:fragment slot="label">Receive email Updates?</svelte:fragment>
-		</CheckboxInput>
-		<br />
-		<br />
-		Your number: {numberInputTest}<button on:click={() => numberInputTest++}>+</button>
-	</Box>
-	<br />
-	<Box resize="both" width={96} height={24} roundness="md">
-		Boxes can (optionally) be resized
-		<Icon icon="example/academic-cap" transform="rotate3d(1, 1, 1, 45deg)" />
-		<Icon icon="example/academic-cap" color="accent-9" />
-	</Box>
+	<div style:margin="2rem">
+		<Box resize="none" width={64} height="fit" roundness="md" inline={true}>
+			<h2 style:text-align="center" style:margin-top=".25rem">Number-ish Inputs</h2>
+			<div style:font-size="small">
+				<NumberInput bind:value={numberInputTest} height={6} width={36} roundness="md" placeholder="Pick a number, any number">
+					<svelte:fragment slot="label">Number:</svelte:fragment>
+				</NumberInput>
+				<RangeInput bind:value={numberInputTest} height={6} width={36} roundness="md">
+					<svelte:fragment slot="label">Range:</svelte:fragment>
+				</RangeInput>
+				<RangeInputWithSister bind:value={numberInputTest} height={6} width={36} roundness="md">
+					<svelte:fragment slot="label">Range with unit:</svelte:fragment>
+					<span slot="unit" style:font-size=".75rem">cm</span>
+				</RangeInputWithSister>
+			</div>
+		</Box>
+		<Box resize="none" width={52} height="fit" roundness="md" inline={true}>
+			<h2 style:text-align="center" style:margin-top=".25rem">Other Inputs</h2>
+			<div style:font-size="small">
+				<CheckboxInput value={true} readOnly={true}>
+					<svelte:fragment slot="label">Sell your soul to SvelteKit?</svelte:fragment>
+				</CheckboxInput>
+				<CheckboxInput value={true}>
+					<svelte:fragment slot="label">Subscribe to our email spam?</svelte:fragment>
+				</CheckboxInput>
+			</div>
+		</Box>
+		<Box resize="both" width={96} height={24} roundness="md" inline={true}>
+			Boxes can (optionally) be resized
+			<Icon icon="example/academic-cap" transform="rotate3d(1, 1, 1, 45deg)" />
+			<Icon icon="example/academic-cap" color="accent-9" />
+		</Box>
+	</div>
 </Root>
 
 <style>
