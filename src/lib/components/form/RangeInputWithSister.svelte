@@ -13,6 +13,7 @@
 	import { sizeToCSS } from '$lib/helper.js';
 	import { onMount, createEventDispatcher } from 'svelte';
 	import Debouncer from '$lib/debouncer.js';
+	import RangeInput from './RangeInput.svelte';
 
 	const dispatch = createEventDispatcher();
 	const debouncer = new Debouncer();
@@ -22,69 +23,7 @@
 	export let max = NaN;
 	export let step = 1;
 
-	export let inputElement: HTMLInputElement | null = null;
-	let ID: string;
-
-	$: value,
-		(() => {
-			if (!inputElement) return;
-
-			const oldValue = parseFloat(inputElement.value);
-			if (value == oldValue) return; // Avoid unnecessary updates.
-
-			// @ts-ignore
-			inputElement.value = value;
-		})();
-
-	onMount(() => {
-		if (!inputElement) return; // Shut up typescript.
-
-		// @ts-ignore
-		inputElement.value = value;
-
-		inputElement.addEventListener('input', () => {
-			if (!inputElement) return;
-
-			const newValue = parseFloat(inputElement.value);
-			if (newValue == value) return; // Avoid unnecessary updates.
-
-			value = newValue;
-			dispatch('update', newValue);
-
-			debouncer.debounce(() => {
-				dispatch('update-debounced', value);
-			});
-		});
-
-		inputElement.addEventListener('change', () => {
-			dispatch('update-unfocused', value);
-		});
-
-		inputElement.addEventListener(
-			'wheel',
-			(event) => {
-				if (!inputElement) return;
-				if (document.activeElement != inputElement) return; // We don't have focus.
-				if (inputElement.disabled) return; // Don't.
-
-				if (event.deltaY != 0 && event.deltaY != -0) {
-					if (event.deltaY > 1) {
-						value -= step;
-					} else {
-						value += step;
-					}
-				}
-				if (event.deltaX != 0 && event.deltaX != -0) {
-					if (event.deltaX > 1) {
-						value += step;
-					} else {
-						value -= step;
-					}
-				}
-			},
-			{ passive: true }
-		);
-	});
+	export let ID: string = '';
 </script>
 
 <!-- I hate having to repeat myself like this. Oh well. -->
@@ -95,70 +34,88 @@
 		</label>
 
 		<div class="clui-input-range-container" style:width={sizeToCSS($$restProps.width)}>
-			<div class="clui-input-range-sister" aria-hidden="true" style:padding={sizeToCSS($$restProps.padding || 0.5)}>
-				<NumberInput bind:value {...$$restProps} width="full" borderless={true} padding={0} />
-				<div class="clui-input-range-sister-dummy">
+			<div class="clui-input-range-sister" style:padding={sizeToCSS($$restProps.padding || 0.5)}>
+				<!-- Note that this is the REAL input element for screen readers! -->
+				<NumberInput
+					bind:ID
+					bind:value
+					{...$$restProps}
+					width="full"
+					borderless={true}
+					padding={0}
+					on:update={(v) => dispatch('update', v)}
+					on:update-debounced={(v) => dispatch('update-debounced', v)}
+					on:update-unfocused={(v) => dispatch('update-unfocused', v)}
+				/>
+
+				<div class="clui-input-range-sister-dummy" aria-hidden="true">
 					<!-- We use this as a calculation for the width of this part. -->
 					{value}
 				</div>
 			</div>
 
 			{#if $$slots.unit}
-				<div style="margin-right: 2px;" style:padding-top={sizeToCSS($$restProps.padding || 0.5)}>
-					<slot name="unit" />
+				<div class="clui-input-range-unit" style="margin-right: 2px;">
+					<span style="font-size: .85em;">
+						<slot name="unit" />
+					</span>
 				</div>
 			{/if}
 
-			<InternalInput
-				bind:ID
-				bind:inputElement
-				type="range"
-				borderless={true}
-				properties={{
-					min: min,
-					max: max,
-					step: step,
-					inputmode: 'numeric',
-					pattern: 'd*'
-				}}
-				{...$$restProps}
-				width="full"
-				hasLabel={false}
-			/>
+			<div aria-hidden="true" style:display="content">
+				<RangeInput
+					bind:value
+					borderless={true}
+					{...$$restProps}
+					width="full"
+					on:update={(v) => dispatch('update', v)}
+					on:update-debounced={(v) => dispatch('update-debounced', v)}
+					on:update-unfocused={(v) => dispatch('update-unfocused', v)}
+				/>
+			</div>
 		</div>
 	</div>
 {:else}
 	<div class="clui-input-range-container" style:width={sizeToCSS($$restProps.width)}>
-		<div class="clui-input-range-sister" aria-hidden="true" style:padding={sizeToCSS($$restProps.padding || 0.5)}>
-			<NumberInput bind:value {...$$restProps} width="full" borderless={true} padding={0} />
-			<div class="clui-input-range-sister-dummy">
+		<div class="clui-input-range-sister" style:padding={sizeToCSS($$restProps.padding || 0.5)}>
+			<!-- Note that this is the REAL input element for screen readers! -->
+			<NumberInput
+				bind:ID
+				bind:value
+				{...$$restProps}
+				width="full"
+				borderless={true}
+				padding={0}
+				on:update={(v) => dispatch('update', v)}
+				on:update-debounced={(v) => dispatch('update-debounced', v)}
+				on:update-unfocused={(v) => dispatch('update-unfocused', v)}
+			/>
+
+			<div class="clui-input-range-sister-dummy" aria-hidden="true">
 				<!-- We use this as a calculation for the width of this part. -->
 				{value}
 			</div>
 		</div>
 
 		{#if $$slots.unit}
-			<div style="margin-right: 2px;" style:padding-top={sizeToCSS($$restProps.padding || 0.5)}>
-				<slot name="unit" />
+			<div class="clui-input-range-unit" style="margin-right: 2px;">
+				<span style="font-size: .85em;">
+					<slot name="unit" />
+				</span>
 			</div>
 		{/if}
 
-		<InternalInput
-			bind:ID
-			bind:inputElement
-			type="range"
-			borderless={true}
-			properties={{
-				min: min,
-				max: max,
-				step: step,
-				inputmode: 'numeric',
-				pattern: 'd*'
-			}}
-			{...$$restProps}
-			width="full"
-			hasLabel={false}
-		/>
+		<div aria-hidden="true" style:display="content">
+			<RangeInput
+				bind:value
+				borderless={true}
+				{...$$restProps}
+				width="full"
+				on:update={(v) => dispatch('update', v)}
+				on:update-debounced={(v) => dispatch('update-debounced', v)}
+				on:update-unfocused={(v) => dispatch('update-unfocused', v)}
+			/>
+		</div>
 	</div>
 {/if}
 
@@ -186,6 +143,9 @@
 		border-bottom-width: 1px;
 		border-bottom-style: solid;
 		border-bottom-color: var(--base-7);
+	}
+	.clui-input-range-unit {
+		padding-top: 0.15em;
 	}
 
 	.clui-input-range-sister-dummy {

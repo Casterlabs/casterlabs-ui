@@ -39,7 +39,7 @@
 				</RangeInput>
 				<RangeInputWithSister bind:value={numberInputTest} height={6} width={36} roundness="md">
 					<svelte:fragment slot="label">Range with unit:</svelte:fragment>
-					<span slot="unit" style:font-size=".75rem">cm</span>
+					<span slot="unit">cm</span>
 				</RangeInputWithSister>
 			</div>
 		</Box>
