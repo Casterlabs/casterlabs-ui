@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
 	export type StandardInputProps = {
+		readonly ID?: string;
 		borderless?: boolean;
 		readOnly?: boolean;
 		resize?: ResizeProperty;

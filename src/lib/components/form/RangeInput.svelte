@@ -21,6 +21,7 @@
 	export let step = 1;
 
 	export let inputElement: HTMLInputElement | null = null;
+	export let ID: string = '';
 
 	$: value,
 		(() => {
@@ -85,6 +86,7 @@
 </script>
 
 <InternalInput
+	bind:ID
 	bind:inputElement
 	type="range"
 	borderless={true}

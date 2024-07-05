@@ -23,6 +23,7 @@
 	export let placeholder = '';
 
 	export let inputElement: HTMLInputElement | null = null;
+	export let ID: string = '';
 
 	$: value,
 		(() => {
@@ -81,6 +82,7 @@
 </script>
 
 <InternalInput
+	bind:ID
 	bind:inputElement
 	type="number"
 	properties={{

@@ -13,7 +13,9 @@
 	const debouncer = new Debouncer();
 
 	export let value = false;
+
 	export let inputElement: HTMLInputElement | null = null;
+	export let ID: string = '';
 
 	$: value,
 		(() => {
@@ -52,7 +54,7 @@
 	});
 </script>
 
-<InternalInput bind:inputElement type="checkbox" borderless={true} properties={{}} {...$$restProps} hasLabel={$$slots.label}>
+<InternalInput bind:ID bind:inputElement type="checkbox" borderless={true} properties={{}} {...$$restProps} hasLabel={$$slots.label}>
 	<svelte:fragment slot="label">
 		<slot name="label" />
 	</svelte:fragment>
