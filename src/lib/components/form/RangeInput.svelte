@@ -1,8 +1,6 @@
 <script lang="ts">
 	import InternalInput from './_InternalInput.svelte';
-	import NumberInput from './NumberInput.svelte';
 
-	import { sizeToCSS } from '$lib/helper.js';
 	import { onMount, createEventDispatcher } from 'svelte';
 	import Debouncer from '$lib/debouncer.js';
 
