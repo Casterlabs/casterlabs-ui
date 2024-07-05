@@ -132,8 +132,12 @@
 		margin-top: -0.25rem;
 		cursor: pointer;
 	}
-	:global(.clui-input[type='range']:hover::-webkit-slider-thumb) {
+	:global(.clui-input[type='range']:not([disabled]):hover::-webkit-slider-thumb) {
 		border-color: var(--base-8);
+	}
+	:global(.clui-input[type='range'][disabled]:hover::-webkit-slider-thumb) {
+		border-color: var(--base-7);
+		cursor: auto;
 	}
 	:global(.clui-input[type='range']:focus::-webkit-slider-thumb) {
 		outline-width: 2px;

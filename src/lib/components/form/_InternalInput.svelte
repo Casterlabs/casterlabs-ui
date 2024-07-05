@@ -127,8 +127,11 @@
 		background-color: var(--base-2);
 		color: var(--base-12);
 	}
-	.clui-input:not(.borderless):hover {
+	.clui-input:not(.borderless):not([disabled]):hover {
 		border-color: var(--base-8);
+	}
+	.clui-input[disabled] {
+		cursor: auto;
 	}
 
 	.clui-input:focus {
