@@ -109,7 +109,10 @@
 	:global(.clui-input[type='range']) {
 		appearance: none;
 		background: transparent;
-		/* transform: translateY(-3px); */
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+		margin-left: 0;
+		margin-right: 0;
 	}
 
 	:global(.clui-input[type='range']::-webkit-slider-runnable-track) {

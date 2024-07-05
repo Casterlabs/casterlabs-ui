@@ -56,7 +56,7 @@
 			</div>
 
 			{#if $$slots.unit}
-				<div class="clui-input-range-unit" style="margin-right: 2px;">
+				<div class="clui-input-range-unit" style="padding-right: 4px;">
 					<span style="font-size: .85em;">
 						<slot name="unit" />
 					</span>
@@ -99,7 +99,7 @@
 		</div>
 
 		{#if $$slots.unit}
-			<div class="clui-input-range-unit" style="margin-right: 2px;">
+			<div class="clui-input-range-unit" style="padding-right: 4px;">
 				<span style="font-size: .85em;">
 					<slot name="unit" />
 				</span>
@@ -167,41 +167,5 @@
 	:global(.clui-input-range-sister .clui-input[type='number']::-webkit-inner-spin-button) {
 		-webkit-appearance: none;
 		margin: 0;
-	}
-
-	:global(.clui-input[type='range']) {
-		appearance: none;
-		background: transparent;
-		/* transform: translateY(-3px); */
-	}
-
-	:global(.clui-input[type='range']::-webkit-slider-runnable-track) {
-		width: 100%;
-		height: 4px;
-		border: none;
-		border-radius: 3px;
-		background-color: var(--base-7);
-	}
-
-	:global(.clui-input[type='range']::-webkit-slider-thumb) {
-		-webkit-appearance: none;
-		height: 0.75rem;
-		width: 0.75rem;
-		border-radius: 500%;
-		background-color: var(--base-1);
-		border-width: 1px;
-		border-style: solid;
-		border-color: var(--base-7);
-		margin-top: -0.25rem;
-		cursor: pointer;
-	}
-	:global(.clui-input[type='range']:hover::-webkit-slider-thumb) {
-		border-color: var(--base-8);
-	}
-	:global(.clui-input[type='range']:focus::-webkit-slider-thumb) {
-		outline-width: 2px;
-		outline-style: solid;
-		outline-color: var(--accent-8);
-		border-color: var(--base-2);
 	}
 </style>
