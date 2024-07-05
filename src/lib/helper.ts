@@ -16,6 +16,8 @@ export function qRemUnitToCSS(n: QRemUnit) {
 
 export type ResizeProperty = 'none' | 'both' | 'horizontal' | 'vertical';
 
+export type VerticalAlignProperty = 'baseline' | 'sub' | 'super' | 'text-top' | 'text-bottom' | 'middle' | 'top' | 'bottom';
+
 /* ------------------------------------------------------------ */
 // https://www.radix-ui.com/colors/docs/palette-composition/understanding-the-scale
 /* ------------------------------------------------------------ */

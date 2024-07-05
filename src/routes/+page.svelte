@@ -28,7 +28,7 @@
 
 <Root>
 	<div style:margin="2rem">
-		<Box resize="none" width={64} height="fit" roundness="md" inline={true}>
+		<Box resize="none" width={64} height="fit" roundness="md" inline={true} verticalAlign="top">
 			<h2 style:text-align="center" style:margin-top=".25rem">Number-ish Inputs</h2>
 			<div style:font-size="small">
 				<NumberInput bind:value={numberInputTest} height={6} width={36} roundness="md" placeholder="Pick a number, any number">
@@ -43,7 +43,7 @@
 				</RangeInputWithSister>
 			</div>
 		</Box>
-		<Box resize="none" width={52} height="fit" roundness="md" inline={true}>
+		<Box resize="none" width={52} height="fit" roundness="md" inline={true} verticalAlign="top">
 			<h2 style:text-align="center" style:margin-top=".25rem">Other Inputs</h2>
 			<div style:font-size="small">
 				<CheckboxInput value={true} readOnly={true}>
@@ -54,7 +54,9 @@
 				</CheckboxInput>
 			</div>
 		</Box>
-		<Box resize="both" width={96} height={24} roundness="md" inline={true}>
+		<br />
+		<br />
+		<Box resize="both" width={96} height={24} roundness="md">
 			Boxes can (optionally) be resized
 			<Icon icon="example/academic-cap" transform="rotate3d(1, 1, 1, 45deg)" />
 			<Icon icon="example/academic-cap" color="accent-9" />
