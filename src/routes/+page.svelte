@@ -1,12 +1,5 @@
 <script lang="ts">
-	import Box from '$lib/components/Box.svelte';
-	import Root from '$lib/components/Root.svelte';
-	import Icon from '$lib/components/Icon.svelte';
-	import NumberInput from '$lib/components/form/NumberInput.svelte';
-	import RangeInput from '$lib/components/form/RangeInput.svelte';
-	import RangeInputWithSister from '$lib/components/form/RangeInputWithSister.svelte';
-	import CheckboxInput from '$lib/components/form/CheckboxInput.svelte';
-	import TextInput from '$lib/components/form/TextInput.svelte';
+	import { Box, Root, Icon, NumberInput, RangeInput, RangeInputWithSister, CheckboxInput, TextInput } from '$lib/components';
 
 	import { registerProvider } from '$lib/icons.js';
 
