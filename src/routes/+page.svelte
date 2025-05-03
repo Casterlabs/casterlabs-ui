@@ -129,9 +129,11 @@ Roundness:
 
 <h2>Box</h2>
 
-<Box>I'm a box!</Box>
+<Box sides={['top', 'bottom', 'left', 'right']}>I'm a box!</Box>
 <br />
-<Box resize="both" style="overflow: hidden;">I'm a <i>resizable</i> box!</Box>
+<Box resize="both" style="overflow: hidden;" sides={['top', 'bottom', 'left', 'right']}>
+	I'm a <i>resizable</i> box!
+</Box>
 
 <br />
 <br />
