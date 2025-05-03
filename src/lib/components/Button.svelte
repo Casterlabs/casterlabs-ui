@@ -30,6 +30,7 @@
 		background-color: transparent;
 		color: currentColor;
 		cursor: pointer;
+		font-size: 0.8rem;
 	}
 
 	button[disabled] {
