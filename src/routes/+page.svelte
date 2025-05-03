@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Box, Button, Input } from '$lib/index.js';
+	import { Box, Button, Divider, Input } from '$lib/index.js';
 
 	let checkboxInputValue = false;
 
@@ -135,10 +135,14 @@ Roundness:
 	I'm a <i>resizable</i> box!
 </Box>
 
+<h2>Divider</h2>
+
+Horizontal:
+<Divider direction="horizontal" />
 <br />
-<br />
-<br />
-<br />
+Vertical:
+<Divider direction="vertical" size="100px" />
+
 <br />
 <br />
 <br />
