@@ -1,14 +1,17 @@
 <script lang="ts">
-	import { Box, Button, Divider, Input } from '$lib/index.js';
-
-	let checkboxInputValue = false;
-
-	let textInputValue = '';
+	import { Box, Button, Divider, Input, InvertedScroller } from '$lib/index.js';
 
 	let numberInputValue = 0;
 	let numberInputStep = 1;
 	let numberInputMin = 0;
 	let numberInputMax = 100;
+
+	let textInputValue = '';
+
+	let checkboxInputValue = false;
+
+	let isScrollerAtBottom = true;
+	let scroller: InvertedScroller;
 </script>
 
 <h1>Casterlabs UI Test Page</h1>
@@ -141,7 +144,40 @@ Horizontal:
 <Divider direction="horizontal" />
 <br />
 Vertical:
-<Divider direction="vertical" size="100px" />
+<Divider direction="vertical" size="3rem" />
+
+<h2>Inverted Scroller</h2>
+
+Is at bottom?
+<b>{isScrollerAtBottom ? 'Yes' : 'No'}</b>
+{#if !isScrollerAtBottom}
+	<Button onclick={() => scroller.jumpToBottom()}>Jump</Button>
+{/if}
+
+<br />
+<br />
+
+<Box style="height: 5rem; padding: 0;" sides={['top', 'bottom', 'left', 'right']}>
+	<InvertedScroller bind:this={scroller} bind:isAtBottom={isScrollerAtBottom}>
+		<ul>
+			<li>(end of list)</li>
+			{#each Array(100) as _, idx}
+				<li>Item {idx + 1}</li>
+			{/each}
+			<li>This is an inverted scroller (in a Box)</li>
+		</ul>
+	</InvertedScroller>
+</Box>
+<br />
+<Box style="height: 5rem; padding: 0; overflow-y: auto;" sides={['top', 'bottom', 'left', 'right']}>
+	<ul>
+		<li>This is a regular scroller (in a Box)</li>
+		{#each Array(100) as _, idx}
+			<li>Item {idx + 1}</li>
+		{/each}
+		<li>(end of list)</li>
+	</ul>
+</Box>
 
 <br />
 <br />
