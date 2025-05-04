@@ -7,19 +7,26 @@
 
 	export function jumpToBottom(behavior: ScrollBehavior = 'smooth') {
 		scrollContainer.scrollTo({
-			top: 0, // Note that the scroll direction is inverted via CSS+JS.
+			top: 0, // Note that the scroll direction is inverted.
 			behavior
 		});
 	}
-</script>
 
-<div
-	class="inverted-scroller"
-	bind:this={scrollContainer}
-	onscrollcapture={() => {
-		isAtBottom = scrollContainer.scrollTop == 0; // Note that the scroll direction is inverted via CSS+JS.
-	}}
-	onwheel={(e) => {
+	let targetScrollTop = $state(0);
+	let scrollTopUpdateTask = -1;
+
+	function onScrollCapture() {
+		isAtBottom = scrollContainer.scrollTop == 0; // Note that the scroll direction is inverted.
+
+		// Debounce to make it less jumpy.
+		// Browsers usually send scroll events pretty quickly when triggered by scrollTo(smooth).
+		clearTimeout(scrollTopUpdateTask);
+		scrollTopUpdateTask = setTimeout(() => {
+			targetScrollTop = scrollContainer.scrollTop;
+		}, 100);
+	}
+
+	function onWheel(e: WheelEvent) {
 		e.preventDefault();
 
 		/*
@@ -31,51 +38,22 @@
             This appears to work pretty reliably in Chromium and Firefox (haven't tested Safari), so I'm happy with it.
         */
 
-		// function getLineHeightInPixels(element: HTMLElement) {
-		// 	if (typeof window.getComputedStyle == 'undefined') {
-		// 		return 16; // Approximate.
-		// 	}
+		// Calling scrollTo while a previous call is still animating will cancel the current animation.
+		// This is how we trick the browser into giving the same _feel_ as a normal scroll would have.
 
-		// 	const computedStyle = window.getComputedStyle(element);
-		// 	const lineHeight = computedStyle.lineHeight;
-
-		// 	if (lineHeight === 'normal') {
-		// 		// Handle the default "normal" line-height
-		// 		// It's typically around 1.2 times the font size, but can vary
-		// 		const fontSize = parseFloat(computedStyle.fontSize);
-		// 		return fontSize * 1.2;
-		// 	}
-
-		// 	return parseFloat(lineHeight);
-		// }
-
-		let pixelY;
-		// switch (e.deltaMode) {
-		// 	case WheelEvent.DOM_DELTA_LINE: {
-		// 		// Use the correct unit for scrolling.
-		// 		const lineHeight = getLineHeightInPixels(e.currentTarget || scrollContainer);
-		// 		console.debug(lineHeight);
-		// 		pixelY = (e.deltaY * lineHeight) / 2;
-		// 		break;
-		// 	}
-
-		// 	case WheelEvent.DOM_DELTA_PAGE:
-		// 		pixelY = e.deltaY * window.innerHeight;
-		// 		break;
-
-		// 	case WheelEvent.DOM_DELTA_PIXEL:
-		// 	default:
-		pixelY = e.deltaY;
-		// }
-
-		const newY = scrollContainer.scrollTop - pixelY;
-
-		// scrollContainer.scrollTop = newY;
+		targetScrollTop = targetScrollTop - e.deltaY; // Note that the scroll direction is inverted.
 		scrollContainer.scrollTo({
-			top: newY,
+			top: targetScrollTop,
 			behavior: 'smooth'
 		});
-	}}
+	}
+</script>
+
+<div
+	class="inverted-scroller"
+	bind:this={scrollContainer}
+	onscrollcapture={onScrollCapture}
+	onwheel={onWheel}
 >
 	<div class="child">
 		<!-- svelte-ignore slot_element_deprecated -->
