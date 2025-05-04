@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { Box, Button, Divider, Input, InvertedScroller } from '$lib/index.js';
 
+	const SCROLL_ITEMS = 1000;
+
 	let numberInputValue = 0;
 	let numberInputStep = 1;
 	let numberInputMin = 0;
@@ -157,27 +159,31 @@ Is at bottom?
 <br />
 <br />
 
-<Box style="height: 5rem; padding: 0;" sides={['top', 'bottom', 'left', 'right']}>
-	<InvertedScroller bind:this={scroller} bind:isAtBottom={isScrollerAtBottom}>
+<div style="display: flex; flex-direction: row; width: 100%; height: 10rem;">
+	<Box style="flex: 1; height: 100%; padding: 0;" sides={['top', 'bottom', 'left', 'right']}>
+		<InvertedScroller bind:this={scroller} bind:isAtBottom={isScrollerAtBottom}>
+			<ul>
+				<li><b>(end of list)</b></li>
+				{#each Array(SCROLL_ITEMS) as _, idx}
+					<li>Item {idx + 1}</li>
+				{/each}
+				<li><b>This is an inverted scroller (in a Box)</b></li>
+			</ul>
+		</InvertedScroller>
+	</Box>
+	<Box
+		style="flex: 1; height: 100%; padding: 0; overflow-y: auto;"
+		sides={['top', 'bottom', 'right']}
+	>
 		<ul>
-			<li>(end of list)</li>
-			{#each Array(100) as _, idx}
+			<li><b>This is a regular scroller (in a Box)</b></li>
+			{#each Array(SCROLL_ITEMS) as _, idx}
 				<li>Item {idx + 1}</li>
 			{/each}
-			<li>This is an inverted scroller (in a Box)</li>
+			<li><b>(end of list)</b></li>
 		</ul>
-	</InvertedScroller>
-</Box>
-<br />
-<Box style="height: 5rem; padding: 0; overflow-y: auto;" sides={['top', 'bottom', 'left', 'right']}>
-	<ul>
-		<li>This is a regular scroller (in a Box)</li>
-		{#each Array(100) as _, idx}
-			<li>Item {idx + 1}</li>
-		{/each}
-		<li>(end of list)</li>
-	</ul>
-</Box>
+	</Box>
+</div>
 
 <br />
 <br />
