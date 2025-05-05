@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { getRenderingEngine } from '$lib/featuredetect.js';
+	import { onMount } from 'svelte';
+
 	let {
 		//
 		scrollContainer = $bindable({} as HTMLDivElement),
@@ -12,7 +15,8 @@
 		});
 	}
 
-	let targetScrollTop = $state(0);
+	let scrollBehavior: ScrollBehavior;
+	let targetScrollTop = 0;
 	let scrollTopUpdateTask = -1;
 
 	function onScrollCapture() {
@@ -38,15 +42,43 @@
             This appears to work pretty reliably in Chromium and Firefox (haven't tested Safari), so I'm happy with it.
         */
 
-		// Calling scrollTo while a previous call is still animating will cancel the current animation.
-		// This is how we trick the browser into giving the same _feel_ as a normal scroll would have.
+		let newTargetScrollTop = targetScrollTop - e.deltaY; // Note that the scroll direction is inverted.
 
-		targetScrollTop = targetScrollTop - e.deltaY; // Note that the scroll direction is inverted.
+		const maxScroll = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+		if (newTargetScrollTop < 0) {
+			newTargetScrollTop = 0; // Min.
+		} else if (newTargetScrollTop > maxScroll) {
+			newTargetScrollTop = maxScroll; // Max.
+		}
+
+		if (newTargetScrollTop == targetScrollTop) {
+			return; // Don't call scrollTo() unnecessarily.
+		}
+
+		targetScrollTop = newTargetScrollTop;
 		scrollContainer.scrollTo({
-			top: targetScrollTop,
-			behavior: 'smooth'
+			top: newTargetScrollTop,
+			behavior: scrollBehavior
 		});
 	}
+
+	onMount(() => {
+		// Allowlist specific rendering engines for smooth scrolling.
+		// Some browsers have a built-in debounce that won't start the animation until our final scrollTo() call
+		// which prevents our scrolling implementation from working correctly.
+		//
+		// So we allow for smooth scrolling if the browser behaves how we want it to.
+		switch (getRenderingEngine()) {
+			case 'webkit': // a.k.a safari
+			case 'gecko': // a.k.a firefox
+				scrollBehavior = 'smooth';
+				break;
+
+			default:
+				scrollBehavior = 'instant';
+				break;
+		}
+	});
 </script>
 
 <div
