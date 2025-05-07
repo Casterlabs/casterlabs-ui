@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { Box, Button, Divider, Input, InvertedScroller } from '$lib/index.js';
+	import { Box, Button, Divider, Input, InvertedScroller, DynamicList } from '$lib/index.js';
 
 	const SCROLL_ITEMS = 1000;
+	const DYNAMIC_STARTING_ITEMS = 100;
 
 	let numberInputValue = 0;
 	let numberInputStep = 1;
@@ -14,6 +15,10 @@
 
 	let isScrollerAtBottom = true;
 	let scroller: InvertedScroller;
+
+	let dynamicList: DynamicList;
+	let dynamicListItemIdx = DYNAMIC_STARTING_ITEMS;
+	let dynamicListItemsVisible = 0;
 </script>
 
 <h1>Casterlabs UI Test Page</h1>
@@ -26,7 +31,7 @@ Page Zoom:
 	placeholder="16"
 	borderless
 	style="width: 8ch;"
-	oninput={(e) => {
+	oninput={(e: Event) => {
 		// @ts-ignore
 		const newValue = e.target.value ?? 16;
 		document.documentElement.style.fontSize = newValue + 'px';
@@ -40,7 +45,7 @@ Roundness:
 	placeholder="0"
 	borderless
 	style="width: 8ch;"
-	oninput={(e) => {
+	oninput={(e: Event) => {
 		// @ts-ignore
 		const newValue = e.target.value ?? 4;
 		// @ts-ignore
@@ -185,6 +190,40 @@ Is at bottom?
 	</Box>
 </div>
 
+<h2>Dynamic List</h2>
+
+<p>
+	This element unmounts the given snippet if the item isn't visible in the viewport and remounts it
+	when it becomes visible. This is useful for heavy list-based UIs that have a lot of items. You can
+	pass it either a Component to mount or a snipper (which gets wrapped and mounted).
+</p>
+
+<p>
+	Items visible: {dynamicListItemsVisible}
+	<Button
+		onclick={() => {
+			dynamicList.addItem(dynamicListItemIdx++);
+		}}
+	>
+		+
+	</Button>
+</p>
+
+<Box
+	style="flex: 1; height: 10rem; padding: 0; overflow:hidden;"
+	sides={['top', 'bottom', 'left', 'right']}
+	resize="horizontal"
+>
+	<DynamicList
+		bind:this={dynamicList}
+		startWith={Array.from(Array(DYNAMIC_STARTING_ITEMS).keys())}
+		bind:itemsVisible={dynamicListItemsVisible}
+	>
+		{#snippet itemRenderer(num: number)}
+			This is item #{num}
+		{/snippet}
+	</DynamicList>
+</Box>
 <br />
 <br />
 <br />
