@@ -10,12 +10,20 @@
 	declare type ItemRenderer = Component<() => ItemData, any, any> | Snippet<[ItemData]>;
 
 	interface Props {
-		itemsVisible?: number;
+		/**
+		 * An amount (in pixels) which will be used by the observer to determine which elements are visible.
+		 * Basically, a higher value results in more items on the top and bottom that will be considered "visible".
+		 * This is to make scrolling the list smoother as higher bleed values prevent elements from popping into existience.
+		 */
+		bleed?: number;
+
 		startWith?: ItemData[];
 		itemRenderer: ItemRenderer;
+
+		itemsVisible?: number;
 	}
 
-	let { itemRenderer, startWith, itemsVisible = $bindable(0) }: Props = $props();
+	let { bleed = 0, itemRenderer, startWith, itemsVisible = $bindable(0) }: Props = $props();
 
 	let unorderedList: HTMLElement;
 	let observer: IntersectionObserver;
@@ -118,7 +126,8 @@
 		};
 
 		observer = new IntersectionObserver(callback, {
-			root: unorderedList
+			root: unorderedList,
+			rootMargin: `${bleed}px 0px ${bleed}px 0px`
 		});
 
 		startWith?.forEach(addItem);
@@ -155,12 +164,4 @@
 	}
 </script>
 
-<ul bind:this={unorderedList}></ul>
-
-<style>
-	ul {
-		overflow-y: auto;
-		height: 100%;
-		margin: 0;
-	}
-</style>
+<ul bind:this={unorderedList} style="overflow-y: auto; height: 100%; margin: 0;"></ul>

@@ -2,7 +2,6 @@
 	import { Box, Button, Divider, Input, InvertedScroller, DynamicList } from '$lib/index.js';
 
 	const SCROLL_ITEMS = 1000;
-	const DYNAMIC_STARTING_ITEMS = 100;
 
 	let numberInputValue = 0;
 	let numberInputStep = 1;
@@ -17,8 +16,8 @@
 	let scroller: InvertedScroller;
 
 	let dynamicList: DynamicList;
-	let dynamicListItemIdx = DYNAMIC_STARTING_ITEMS;
 	let dynamicListItemsVisible = 0;
+	let dynamicListBleed = 200;
 </script>
 
 <h1>Casterlabs UI Test Page</h1>
@@ -195,34 +194,47 @@ Is at bottom?
 <p>
 	This element unmounts the given snippet if the item isn't visible in the viewport and remounts it
 	when it becomes visible. This is useful for heavy list-based UIs that have a lot of items. You can
-	pass it either a Component to mount or a snipper (which gets wrapped and mounted).
+	pass it either a Component to mount or a snippet (which gets wrapped and mounted).
+
+	<br />
+	<br />
+
+	The bleed value determines how far an element has to be outside of the view area before it gets
+	unmounted. Higher values allow you to have a seamless experience when scrolling at the cost of
+	additional DOM elements.
 </p>
 
 <p>
+	Bleed: <Input
+		type="number"
+		bind:value={dynamicListBleed}
+		step={10}
+		min={0}
+		placeholder="Bleed"
+		borderless
+		style="width: calc(0.85 * 1ch * {dynamicListBleed.toString().length} + 4ch);"
+	/>px
+	<br />
 	Items visible: {dynamicListItemsVisible}
-	<Button
-		onclick={() => {
-			dynamicList.addItem(dynamicListItemIdx++);
-		}}
-	>
-		+
-	</Button>
 </p>
 
 <Box
-	style="flex: 1; height: 10rem; padding: 0; overflow:hidden;"
+	style="flex: 1; height: 10rem; padding: 0; overflow: hidden;"
 	sides={['top', 'bottom', 'left', 'right']}
 	resize="horizontal"
 >
-	<DynamicList
-		bind:this={dynamicList}
-		startWith={Array.from(Array(DYNAMIC_STARTING_ITEMS).keys())}
-		bind:itemsVisible={dynamicListItemsVisible}
-	>
-		{#snippet itemRenderer(num: number)}
-			This is item #{num}
-		{/snippet}
-	</DynamicList>
+	{#key dynamicListBleed}
+		<DynamicList
+			bind:this={dynamicList}
+			startWith={Array.from(Array(1_000).keys())}
+			bind:itemsVisible={dynamicListItemsVisible}
+			bleed={dynamicListBleed}
+		>
+			{#snippet itemRenderer(num: number)}
+				This is item #{num}
+			{/snippet}
+		</DynamicList>
+	{/key}
 </Box>
 <br />
 <br />
