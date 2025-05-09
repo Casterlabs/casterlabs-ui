@@ -22,7 +22,7 @@
 
 {#snippet itemRenderer(item: number | string)}
 	{#if typeof item == 'number'}
-		This is item #{item}
+		This is item #{item + 1}
 	{:else}
 		<b>{item}</b>
 	{/if}
@@ -175,7 +175,7 @@ Is at bottom?
 	<Box style="flex: 1; height: 100%; padding: 0;" sides={['top', 'bottom', 'left', 'right']}>
 		<InvertedScroller bind:this={scroller} bind:isAtBottom={isScrollerAtBottom}>
 			<ul>
-				{#each ['(start of list)', ...Array(100).keys(), 'This is an InvertedScroller (in a Box)'] as item}
+				{#each ['(start of list)', ...Array(SCROLL_ITEMS).keys(), 'This is an InvertedScroller (in a Box)'] as item}
 					<li>{@render itemRenderer(item)}</li>
 				{/each}
 			</ul>
@@ -186,7 +186,7 @@ Is at bottom?
 		sides={['top', 'bottom', 'right']}
 	>
 		<ul>
-			{#each ['This is a regular scrollable div (in a Box)', ...Array(100).keys(), '(end of list)'] as item}
+			{#each ['This is a regular scrollable div (in a Box)', ...Array(SCROLL_ITEMS).keys(), '(end of list)'] as item}
 				<li>{@render itemRenderer(item)}</li>
 			{/each}
 		</ul>
@@ -235,7 +235,7 @@ Is at bottom?
 				bind:this={dynamicList1}
 				startWith={[
 					'This is an regular DynamicList (in a Box)',
-					...Array(1_000).keys(),
+					...Array(SCROLL_ITEMS).keys(),
 					'(end of list)'
 				]}
 				bleed={dynamicListBleed / 100}
@@ -258,7 +258,7 @@ Is at bottom?
 				inverted
 				startWith={[
 					'(start of list)',
-					...Array(1_000).keys(),
+					...Array(SCROLL_ITEMS).keys(),
 					'This is an inverted DynamicList (in a Box)'
 				]}
 				bleed={dynamicListBleed / 100}
