@@ -38,7 +38,6 @@
 		scrollContainer = $bindable({} as HTMLElement)
 	}: Props = $props();
 
-	let unorderedList: HTMLElement = $state({} as HTMLElement);
 	let observer: IntersectionObserver;
 
 	let allItems: Record<Id, TrackedItem> = {};
@@ -76,7 +75,7 @@
 			visibleItems[this.id] = this;
 			delete hiddenItems[this.id];
 
-			this.li.style.height = 'auto';
+			this.li.style.height = 'fit-content';
 
 			this.component = mount(itemRenderer, {
 				target: this.li,
@@ -85,7 +84,7 @@
 			});
 		}
 
-		public unmount(height: number): void {
+		public unmount(height: number, outro?: boolean): void {
 			if (!this.component) {
 				// console.debug(`[ListRenderer | ${this.id}]`, "Element isn't mounted!");
 				return;
@@ -98,20 +97,19 @@
 			this.li.style.height = height + 'px';
 
 			unmount(this.component, {
-				outro: false
+				outro: outro
 			});
 			this.component = undefined;
 		}
 
 		public destroy() {
-			this.unmount(0);
+			observer.unobserve(this.li);
+			this.unmount(0, true);
+			this.li.remove();
 
 			delete allItems[this.id];
 			delete visibleItems[this.id];
 			delete hiddenItems[this.id];
-
-			observer.unobserve(this.li);
-			this.li.remove();
 		}
 	}
 
@@ -138,7 +136,7 @@
 
 		const bleedPercent = (bleed * 100).toFixed(2);
 		observer = new IntersectionObserver(callback, {
-			root: unorderedList,
+			root: scrollContainer,
 			rootMargin: `${bleedPercent}% 0px ${bleedPercent}% 0px`
 		});
 
@@ -165,7 +163,12 @@
 		const li = document.createElement('li');
 		const tracked = new TrackedItem(li, data);
 
-		unorderedList.appendChild(li);
+		if (inverted) {
+			scrollContainer.insertBefore(li, scrollContainer.firstChild);
+		} else {
+			scrollContainer.appendChild(li);
+		}
+
 		tracked.mount(true);
 		observer.observe(li);
 	}
@@ -184,19 +187,16 @@
 </script>
 
 {#if inverted}
-	<div
+	<ul
 		class="inverted-scroller"
 		bind:this={scrollContainer}
 		use:invertedScroller={(b) => {
 			isAtStart = b;
 		}}
-	>
-		<ul bind:this={unorderedList} class="inverted-scroller-child"></ul>
-	</div>
+	></ul>
 {:else}
 	<ul
 		bind:this={scrollContainer}
-		bind:this={unorderedList}
 		onscrollcapture={() => {
 			isAtStart = scrollContainer.scrollTop == 0;
 		}}
@@ -220,14 +220,13 @@
 		overflow-y: auto;
 	}
 
-	.inverted-scroller-child {
+	:global(.inverted-scroller > li) {
 		position: relative;
-		height: fit-content;
 		overflow-y: hidden;
 	}
 
 	.inverted-scroller,
-	.inverted-scroller > .inverted-scroller-child {
+	:global(.inverted-scroller > li) {
 		transform: scaleY(-1);
 	}
 </style>
