@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { NumericalIdGenerator, type Id } from '$lib/ids.js';
+	import { NumericalIdGenerator, type Id } from '$lib/util/ids.js';
 	import { mount, onMount, unmount, type Component, type Snippet } from 'svelte';
+	import invertedScroller from '$lib/actions/inverted-scroller.svelte.js';
 
 	const ID_ATTR = 'data-clui-list-item-id';
 	const ID_GENERATOR = new NumericalIdGenerator();
@@ -17,15 +18,24 @@
 		 */
 		bleed?: number;
 
+		inverted?: boolean;
+
 		startWith?: ItemData[];
 		itemRenderer: ItemRenderer;
 
-		itemsVisible?: number;
+		isAtStart?: boolean;
 	}
 
-	let { bleed = 0, itemRenderer, startWith, itemsVisible = $bindable(0) }: Props = $props();
+	let {
+		bleed = 0,
+		inverted = false,
+		itemRenderer,
+		startWith,
+		isAtStart = $bindable(true)
+	}: Props = $props();
 
-	let unorderedList: HTMLElement;
+	let scrollContainer: HTMLElement = $state({} as HTMLElement);
+	let unorderedList: HTMLElement = $state({} as HTMLElement);
 	let observer: IntersectionObserver;
 
 	let allItems: Record<Id, TrackedItem> = {};
@@ -120,8 +130,6 @@
 					const height = entry.boundingClientRect.height; // The height of the element when it is fully visible.
 					trackedItem.unmount(height);
 				}
-
-				itemsVisible = Object.keys(visibleItems).length;
 			});
 		};
 
@@ -142,6 +150,13 @@
 			}
 		};
 	});
+
+	export function jumpToStart(behavior: ScrollBehavior = 'smooth') {
+		scrollContainer.scrollTo({
+			top: 0, // When we're inverted, `top` becomes our bottom.
+			behavior
+		});
+	}
 
 	export function addItem(data: ItemData) {
 		const li = document.createElement('li');
@@ -165,4 +180,51 @@
 	}
 </script>
 
-<ul bind:this={unorderedList} style="overflow-y: auto; height: 100%; margin: 0;"></ul>
+{#if inverted}
+	<div
+		class="inverted-scroller"
+		bind:this={scrollContainer}
+		use:invertedScroller={(b) => {
+			isAtStart = b;
+		}}
+	>
+		<ul bind:this={unorderedList} class="inverted-scroller-child"></ul>
+	</div>
+{:else}
+	<ul
+		bind:this={scrollContainer}
+		bind:this={unorderedList}
+		onscrollcapture={() => {
+			isAtStart = scrollContainer.scrollTop == 0;
+		}}
+		class="regular-scroller"
+	></ul>
+{/if}
+
+<style>
+	ul {
+		margin: 0;
+	}
+
+	.regular-scroller {
+		overflow-y: auto;
+		height: 100%;
+	}
+
+	.inverted-scroller {
+		height: 100%;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+
+	.inverted-scroller-child {
+		position: relative;
+		height: fit-content;
+		overflow-y: hidden;
+	}
+
+	.inverted-scroller,
+	.inverted-scroller > .inverted-scroller-child {
+		transform: scaleY(-1);
+	}
+</style>

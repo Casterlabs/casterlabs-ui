@@ -15,9 +15,9 @@
 	let isScrollerAtBottom = true;
 	let scroller: InvertedScroller;
 
-	let dynamicList: DynamicList;
-	let dynamicListItemsVisible = 0;
 	let dynamicListBleed = 300;
+	let dynamicList1: DynamicList;
+	let dynamicList2: DynamicList;
 </script>
 
 <h1>Casterlabs UI Test Page</h1>
@@ -171,7 +171,7 @@ Is at bottom?
 				{#each Array(SCROLL_ITEMS) as _, idx}
 					<li>Item {idx + 1}</li>
 				{/each}
-				<li><b>This is an inverted scroller (in a Box)</b></li>
+				<li><b>This is an InvertedScroller (in a Box)</b></li>
 			</ul>
 		</InvertedScroller>
 	</Box>
@@ -180,7 +180,7 @@ Is at bottom?
 		sides={['top', 'bottom', 'right']}
 	>
 		<ul>
-			<li><b>This is a regular scroller (in a Box)</b></li>
+			<li><b>This is a regular scrollable div (in a Box)</b></li>
 			{#each Array(SCROLL_ITEMS) as _, idx}
 				<li>Item {idx + 1}</li>
 			{/each}
@@ -214,28 +214,54 @@ Is at bottom?
 		style="width: calc(0.85ch * {dynamicListBleed.toString()
 			.length} + .25rem); appearance: textfield;"
 	/>%
-	<br />
-	Items visible: {dynamicListItemsVisible}
+	<Button
+		onclick={() => {
+			dynamicList1.jumpToStart();
+			dynamicList2.jumpToStart();
+		}}
+	>
+		Jump to start
+	</Button>
 </p>
 
-<Box
-	style="flex: 1; height: 10rem; padding: 0; overflow: hidden;"
-	sides={['top', 'bottom', 'left', 'right']}
-	resize="horizontal"
->
+<div style="display: flex; flex-direction: row; width: 100%; height: 10rem;">
 	{#key dynamicListBleed}
-		<DynamicList
-			bind:this={dynamicList}
-			startWith={Array.from(Array(1_000).keys())}
-			bind:itemsVisible={dynamicListItemsVisible}
-			bleed={dynamicListBleed / 100}
+		<Box style="flex: 1; height: 100%; padding: 0;" sides={['top', 'bottom', 'left', 'right']}>
+			<DynamicList
+				bind:this={dynamicList1}
+				startWith={['This is an regular DynamicList (in a Box)', ...Array(1_000).keys()]}
+				bleed={dynamicListBleed / 100}
+			>
+				{#snippet itemRenderer(item: number | string)}
+					{#if typeof item == 'number'}
+						This is item #{item}
+					{:else}
+						<b>{item}</b>
+					{/if}
+				{/snippet}
+			</DynamicList>
+		</Box>
+		<Box
+			style="flex: 1; height: 100%; padding: 0; overflow-y: auto;"
+			sides={['top', 'bottom', 'right']}
 		>
-			{#snippet itemRenderer(num: number)}
-				This is item #{num}
-			{/snippet}
-		</DynamicList>
+			<DynamicList
+				bind:this={dynamicList2}
+				inverted
+				startWith={[...Array(1_000).keys(), 'This is an inverted DynamicList (in a Box)']}
+				bleed={dynamicListBleed / 100}
+			>
+				{#snippet itemRenderer(item: number | string)}
+					{#if typeof item == 'number'}
+						This is item #{item}
+					{:else}
+						<b>{item}</b>
+					{/if}
+				{/snippet}
+			</DynamicList>
+		</Box>
 	{/key}
-</Box>
+</div>
 <br />
 <br />
 <br />
