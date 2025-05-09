@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" module>
 	type Direction = 'horizontal' | 'vertical';
 
 	interface Props {
@@ -7,8 +7,16 @@
 		direction: Direction;
 		size?: string;
 	}
+</script>
 
-	let { class: clazz, style, direction, size = '100%' }: Props = $props();
+<script lang="ts">
+	let {
+		//
+		class: clazz,
+		style,
+		direction,
+		size = '100%'
+	}: Props = $props();
 </script>
 
 <div

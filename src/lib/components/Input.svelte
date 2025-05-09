@@ -1,6 +1,4 @@
-<script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
-
+<script lang="ts" module>
 	interface Props extends HTMLInputAttributes {
 		/**
 		 * Removes the borders from the element. This has the side effect of also making the element transparent and also removes the outline when focused/active.
@@ -13,6 +11,10 @@
 		files?: FileList | undefined | null;
 		indeterminate?: boolean | undefined | null;
 	}
+</script>
+
+<script lang="ts">
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	let {
 		type,

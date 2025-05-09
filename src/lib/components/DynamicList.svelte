@@ -1,14 +1,5 @@
-<script lang="ts">
-	import invertedScroller from '$lib/actions/inverted-scroller.svelte.js';
-	import { type Id, NumericalIdGenerator } from '$lib/util/ids.js';
-
-	import { type Component, type Snippet, mount, onMount, unmount } from 'svelte';
-
-	const ID_ATTR = 'data-clui-list-item-id';
-	const ID_GENERATOR = new NumericalIdGenerator();
-
+<script lang="ts" module>
 	declare type ItemData = any;
-
 	declare type ItemRenderer = Component<() => ItemData, any, any> | Snippet<[ItemData]>;
 
 	interface Props {
@@ -25,17 +16,28 @@
 		itemRenderer: ItemRenderer;
 
 		isAtStart?: boolean;
+		scrollContainer?: HTMLElement;
 	}
+</script>
+
+<script lang="ts">
+	import invertedScroller from '$lib/actions/inverted-scroller.svelte.js';
+	import { type Id, NumericalIdGenerator } from '$lib/util/ids.js';
+
+	import { type Component, type Snippet, mount, onMount, unmount } from 'svelte';
+
+	const ID_ATTR = 'data-clui-list-item-id';
+	const ID_GENERATOR = new NumericalIdGenerator();
 
 	let {
 		bleed = 0,
 		inverted = false,
 		itemRenderer,
 		startWith,
-		isAtStart = $bindable(true)
+		isAtStart = $bindable(true),
+		scrollContainer = $bindable({} as HTMLElement)
 	}: Props = $props();
 
-	let scrollContainer: HTMLElement = $state({} as HTMLElement);
 	let unorderedList: HTMLElement = $state({} as HTMLElement);
 	let observer: IntersectionObserver;
 

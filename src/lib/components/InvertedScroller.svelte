@@ -1,11 +1,18 @@
+<script lang="ts" module>
+	interface Props {
+		isAtBottom?: boolean;
+		scrollContainer?: HTMLElement;
+	}
+</script>
+
 <script lang="ts">
 	import invertedScroller from '$lib/actions/inverted-scroller.svelte.js';
 
 	let {
 		//
-		scrollContainer = $bindable({} as HTMLDivElement),
-		isAtBottom = $bindable(true)
-	} = $props();
+		isAtBottom = $bindable(true),
+		scrollContainer = $bindable({} as HTMLDivElement)
+	}: Props = $props();
 
 	export function jumpToBottom(behavior: ScrollBehavior = 'smooth') {
 		scrollContainer.scrollTo({

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" module>
 	type ResizeProperty = 'none' | 'both' | 'horizontal' | 'vertical';
 	type Side = 'top' | 'bottom' | 'left' | 'right';
 
@@ -8,8 +8,16 @@
 		resize?: ResizeProperty;
 		sides?: Side[];
 	}
+</script>
 
-	let { class: clazz, style, resize = 'none', sides = [] }: Props = $props();
+<script lang="ts">
+	let {
+		//
+		class: clazz,
+		style,
+		resize = 'none',
+		sides = []
+	}: Props = $props();
 
 	const BORDER = '0.0625rem solid var(--clui-color-base-7)';
 	const BORDER_NONE = '0.0625rem solid var(--clui-color-base-2)';

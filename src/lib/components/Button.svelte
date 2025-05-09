@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" module>
 	interface Props {
 		id?: string;
 
@@ -12,8 +12,18 @@
 		disabled?: boolean;
 		onclick?: () => void;
 	}
+</script>
 
-	let { id, class: clazz, style, borderless = false, disabled = false, onclick }: Props = $props();
+<script lang="ts">
+	let {
+		//
+		id,
+		class: clazz,
+		style,
+		borderless = false,
+		disabled = false,
+		onclick
+	}: Props = $props();
 </script>
 
 <button {id} {disabled} {style} class={clazz} class:borderless {onclick}>
