@@ -17,7 +17,7 @@
 
 	let dynamicList: DynamicList;
 	let dynamicListItemsVisible = 0;
-	let dynamicListBleed = 200;
+	let dynamicListBleed = 300;
 </script>
 
 <h1>Casterlabs UI Test Page</h1>
@@ -200,8 +200,8 @@ Is at bottom?
 	<br />
 
 	The bleed value determines how far an element has to be outside of the view area before it gets
-	unmounted. Higher values allow you to have a seamless experience when scrolling at the cost of
-	additional DOM elements.
+	unmounted (specified in % of viewarea height). Higher values allow you to have a seamless
+	experience when scrolling at the cost of additional DOM elements.
 </p>
 
 <p>
@@ -211,9 +211,9 @@ Is at bottom?
 		step={10}
 		min={0}
 		placeholder="Bleed"
-		borderless
-		style="width: calc(0.85 * 1ch * {dynamicListBleed.toString().length} + 4ch);"
-	/>px
+		style="width: calc(0.85ch * {dynamicListBleed.toString()
+			.length} + .25rem); appearance: textfield;"
+	/>%
 	<br />
 	Items visible: {dynamicListItemsVisible}
 </p>
@@ -228,7 +228,7 @@ Is at bottom?
 			bind:this={dynamicList}
 			startWith={Array.from(Array(1_000).keys())}
 			bind:itemsVisible={dynamicListItemsVisible}
-			bleed={dynamicListBleed}
+			bleed={dynamicListBleed / 100}
 		>
 			{#snippet itemRenderer(num: number)}
 				This is item #{num}

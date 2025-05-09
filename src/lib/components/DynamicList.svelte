@@ -11,7 +11,7 @@
 
 	interface Props {
 		/**
-		 * An amount (in pixels) which will be used by the observer to determine which elements are visible.
+		 * An amount (in % of the viewarea's height) which will be used by the observer to determine which elements are visible.
 		 * Basically, a higher value results in more items on the top and bottom that will be considered "visible".
 		 * This is to make scrolling the list smoother as higher bleed values prevent elements from popping into existience.
 		 */
@@ -125,9 +125,10 @@
 			});
 		};
 
+		const bleedPercent = (bleed * 100).toFixed(2);
 		observer = new IntersectionObserver(callback, {
 			root: unorderedList,
-			rootMargin: `${bleed}px 0px ${bleed}px 0px`
+			rootMargin: `${bleedPercent}% 0px ${bleedPercent}% 0px`
 		});
 
 		startWith?.forEach(addItem);
