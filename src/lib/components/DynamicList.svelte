@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { NumericalIdGenerator, type Id } from '$lib/util/ids.js';
-	import { mount, onMount, unmount, type Component, type Snippet } from 'svelte';
 	import invertedScroller from '$lib/actions/inverted-scroller.svelte.js';
+	import { type Id, NumericalIdGenerator } from '$lib/util/ids.js';
+
+	import { type Component, type Snippet, mount, onMount, unmount } from 'svelte';
 
 	const ID_ATTR = 'data-clui-list-item-id';
 	const ID_GENERATOR = new NumericalIdGenerator();

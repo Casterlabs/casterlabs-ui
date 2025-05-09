@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Box, Button, Divider, Input, InvertedScroller, DynamicList } from '$lib/index.js';
+	import { Box, Button, Divider, DynamicList, Input, InvertedScroller } from '$lib/index.js';
 
 	const SCROLL_ITEMS = 1000;
 

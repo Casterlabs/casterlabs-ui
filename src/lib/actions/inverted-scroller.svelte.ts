@@ -1,5 +1,6 @@
-import type { Action } from 'svelte/action';
 import { getRenderingEngine } from '$lib/util/feature-detect.js';
+
+import type { Action } from 'svelte/action';
 
 declare type IsAtBottomCallback = (isAtBottom: boolean) => void;
 
