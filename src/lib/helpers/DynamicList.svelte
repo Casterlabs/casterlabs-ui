@@ -2,7 +2,9 @@
 	import type { Component, Snippet } from 'svelte';
 
 	declare type ItemData = any;
+	declare type ItemId = string;
 	declare type ItemRenderer = Component<() => ItemData, any, any> | Snippet<[ItemData]>;
+	declare type ItemIdGenerator = (data: ItemData) => ItemId;
 
 	interface Props {
 		/**
@@ -14,8 +16,13 @@
 
 		inverted?: boolean;
 
-		startWith?: ItemData[];
+		/**
+		 * By default, this uses the identity of each Item. For complex types (e.g objects) you should use your own generator.
+		 * Your supplied generator *should* return the same unique identifier for the same item ***IF*** you wish to be able to remove them later. Duplicate item ids will not be added.
+		 */
+		itemIdGenerator?: ItemIdGenerator;
 		itemRenderer: ItemRenderer;
+		startWith?: ItemData[];
 
 		isAtStart?: boolean;
 		scrollContainer?: HTMLElement;
@@ -24,47 +31,46 @@
 
 <script lang="ts">
 	import invertedScroller from '$lib/actions/inverted-scroller.svelte.js';
-	import { type Id, NumericalIdGenerator } from '$lib/util/ids.js';
 
 	import { mount, onMount, unmount } from 'svelte';
 
 	const ID_ATTR = 'data-clui-list-item-id';
-	const ID_GENERATOR = new NumericalIdGenerator();
+	const IDENTITY: ItemIdGenerator = (data) => String(data);
 
 	let {
 		bleed = 0,
+
 		inverted = false,
+
+		itemIdGenerator = IDENTITY,
 		itemRenderer,
 		startWith,
+
 		isAtStart = $bindable(true),
 		scrollContainer = $bindable({} as HTMLElement)
 	}: Props = $props();
 
 	let observer: IntersectionObserver;
 
-	let allItems: Record<Id, TrackedItem> = {};
-	let visibleItems: Record<Id, TrackedItem> = {};
-	let hiddenItems: Record<Id, TrackedItem> = {};
+	let allItems: Record<ItemId, TrackedItem> = {};
+	let visibleItems: Record<ItemId, TrackedItem> = {};
+	let hiddenItems: Record<ItemId, TrackedItem> = {};
 
 	class TrackedItem {
-		public id: Id;
+		public id: ItemId;
 
 		public data: ItemData;
 		private li: HTMLLIElement;
 		private component?: Record<string, any>;
 
-		constructor(li: HTMLLIElement, data: ItemData) {
-			this.id = ID_GENERATOR.generate();
+		constructor(li: HTMLLIElement, id: ItemId, data: ItemData) {
+			this.id = id;
 			this.data = data;
 
 			this.li = li;
 			this.li.setAttribute(ID_ATTR, this.id);
 
 			allItems[this.id] = this;
-		}
-
-		get mounted() {
-			return this.component ? true : false;
 		}
 
 		public mount(intro?: boolean): void {
@@ -162,8 +168,11 @@
 	}
 
 	export function addItem(data: ItemData) {
+		const id = itemIdGenerator(data);
+		if (allItems[id]) return; // Already exists.
+
 		const li = document.createElement('li');
-		const tracked = new TrackedItem(li, data);
+		const tracked = new TrackedItem(li, id, data);
 
 		if (inverted) {
 			scrollContainer.insertBefore(li, scrollContainer.firstChild);
@@ -175,16 +184,9 @@
 		observer.observe(li);
 	}
 
-	/**
-	 * Note that this function is useless if `data` is an object. It is only recommended to use this function if you're using some form of identifier, such as a string or a number.
-	 */
-	export function removeItem(data: ItemData) {
-		for (const tracked of Object.values(allItems)) {
-			if (tracked.data === data) {
-				tracked.destroy();
-				return;
-			}
-		}
+	export function removeItem(id: ItemId) {
+		const tracked = allItems[id];
+		tracked?.destroy();
 	}
 </script>
 
