@@ -4,6 +4,7 @@
 		Button,
 		Divider,
 		DynamicList,
+		FocusTrap,
 		Input,
 		InvertedScroller,
 		LongPressListener
@@ -26,6 +27,8 @@
 	let dynamicListBleed = 300;
 	let dynamicList1: DynamicList;
 	let dynamicList2: DynamicList;
+
+	let focusTrapHasFocus: boolean = false;
 </script>
 
 {#snippet itemRenderer(item: number | string)}
@@ -275,6 +278,18 @@ Is at bottom?
 		</Box>
 	{/key}
 </div>
+
+<h2>FocusTrap</h2>
+
+Has focus?
+<b>{focusTrapHasFocus ? 'Yes' : 'No'}</b>
+
+<FocusTrap bind:focused={focusTrapHasFocus}>
+	<Box sides={['top', 'bottom', 'left', 'right']}>
+		<p>When you click in this box, it gains focus. When you click out, it loses focus.</p>
+		<!-- <Input type="text" bind:value={textInputValue} placeholder="Some focusable input" /> -->
+	</Box>
+</FocusTrap>
 
 <h2>LongPressListener (for mobile)</h2>
 
