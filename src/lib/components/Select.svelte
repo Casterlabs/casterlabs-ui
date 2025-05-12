@@ -1,4 +1,6 @@
 <script lang="ts" module>
+	import type { HTMLSelectAttributes } from 'svelte/elements';
+
 	interface Props extends HTMLSelectAttributes {
 		/**
 		 * Removes the borders from the element. This has the side effect of also making the element transparent and also removes the outline when focused/active.
@@ -10,8 +12,6 @@
 </script>
 
 <script lang="ts">
-	import type { HTMLSelectAttributes } from 'svelte/elements';
-
 	let {
 		borderless,
 

@@ -1,4 +1,6 @@
 <script lang="ts" module>
+	import type { Component, Snippet } from 'svelte';
+
 	declare type ItemData = any;
 	declare type ItemRenderer = Component<() => ItemData, any, any> | Snippet<[ItemData]>;
 
@@ -24,7 +26,7 @@
 	import invertedScroller from '$lib/actions/inverted-scroller.svelte.js';
 	import { type Id, NumericalIdGenerator } from '$lib/util/ids.js';
 
-	import { type Component, type Snippet, mount, onMount, unmount } from 'svelte';
+	import { mount, onMount, unmount } from 'svelte';
 
 	const ID_ATTR = 'data-clui-list-item-id';
 	const ID_GENERATOR = new NumericalIdGenerator();
