@@ -235,8 +235,7 @@ Is at bottom?
 		bind:value={dynamicListBleed}
 		step={10}
 		min={0}
-		placeholder="Bleed"
-		style="width: calc(0.85ch * {dynamicListBleed.toString()
+		style="width: calc(0.85ch * {(dynamicListBleed || 0).toString()
 			.length} + .25rem); appearance: textfield;"
 	/>%
 	<Button
