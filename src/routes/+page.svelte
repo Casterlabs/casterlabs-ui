@@ -7,7 +7,8 @@
 		FocusTrap,
 		Input,
 		InvertedScroller,
-		LongPressListener
+		LongPressListener,
+		Select
 	} from '$lib/index.js';
 
 	const SCROLL_ITEMS = 1000;
@@ -148,6 +149,15 @@ Roundness:
 
 <Input type="checkbox" bind:checked={checkboxInputValue} />
 <Input type="checkbox" bind:checked={checkboxInputValue} disabled />
+
+<h2>Select</h2>
+
+<Select>
+	<option value="" disabled selected>Select an option...</option>
+	<option> option 1 </option>
+	<option> option 2 </option>
+	<option> option 3 </option>
+</Select>
 
 <h2>Button</h2>
 
