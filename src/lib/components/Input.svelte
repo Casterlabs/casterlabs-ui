@@ -116,6 +116,10 @@
 		color: var(--clui-color-base-12);
 	}
 
+	input:not(.borderless)::placeholder {
+		color: var(--clui-color-base-11);
+	}
+
 	/* Generic Hover */
 
 	input:not(.borderless):not([readonly]):not([disabled]):hover {
