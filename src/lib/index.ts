@@ -4,3 +4,4 @@ export { default as Divider } from '$lib/components/Divider.svelte';
 export { default as DynamicList } from '$lib/components/DynamicList.svelte';
 export { default as Input } from '$lib/components/Input.svelte';
 export { default as InvertedScroller } from '$lib/components/InvertedScroller.svelte';
+export { default as LongPressListener } from '$lib/helpers/LongPressListener.svelte';

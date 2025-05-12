@@ -1,5 +1,13 @@
 <script lang="ts">
-	import { Box, Button, Divider, DynamicList, Input, InvertedScroller } from '$lib/index.js';
+	import {
+		Box,
+		Button,
+		Divider,
+		DynamicList,
+		Input,
+		InvertedScroller,
+		LongPressListener
+	} from '$lib/index.js';
 
 	const SCROLL_ITEMS = 1000;
 
@@ -267,6 +275,17 @@ Is at bottom?
 		</Box>
 	{/key}
 </div>
+
+<h2>LongPressListener (for mobile)</h2>
+
+<LongPressListener
+	onlongpress={() => {
+		alert('Long pressed!');
+	}}
+>
+	<p style="user-select: none; -webkit-user-select: none;">Hold your finger on me!</p>
+</LongPressListener>
+
 <br />
 <br />
 <br />
