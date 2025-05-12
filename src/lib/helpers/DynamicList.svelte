@@ -211,22 +211,13 @@
 <style>
 	ul {
 		margin: 0;
-	}
-
-	.regular-scroller {
-		overflow-y: auto;
-		height: 100%;
-	}
-
-	.inverted-scroller {
 		height: 100%;
 		overflow-x: hidden;
 		overflow-y: auto;
 	}
 
-	:global(.inverted-scroller > li) {
+	:global(ul > li) {
 		position: relative;
-		overflow-y: hidden;
 	}
 
 	.inverted-scroller,
