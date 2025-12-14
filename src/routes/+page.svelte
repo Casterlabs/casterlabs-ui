@@ -141,6 +141,20 @@ Padding:
 	<option> option 3 </option>
 </Select>
 
+<Select borderless>
+	<option value="" disabled selected>Regular</option>
+	<option> option 1 </option>
+	<option> option 2 </option>
+	<option> option 3 </option>
+</Select>
+
+<Select disabled>
+	<option value="" disabled selected>Regular</option>
+	<option> option 1 </option>
+	<option> option 2 </option>
+	<option> option 3 </option>
+</Select>
+
 <h2>Button</h2>
 
 <Button onclick={() => alert('Clicked!')}>Regular</Button>
