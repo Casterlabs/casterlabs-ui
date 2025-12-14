@@ -65,7 +65,7 @@
 		background-color: var(--clui-color-base-3);
 		color: var(--clui-color-base-12);
 		padding: var(--clui-padding);
-		padding-right: calc(var(--clui-padding) + 1rem);
+		padding-right: calc(var(--clui-padding, 0) + 1rem);
 	}
 
 	select[disabled] {
