@@ -30,7 +30,8 @@
 <style>
 	.wrapper {
 		position: relative;
-		display: inline-flex;
+		display: inline-block;
+		line-height: 0;
 	}
 
 	.wrapper::after {
@@ -48,6 +49,7 @@
 	}
 
 	select {
+		line-height: normal;
 		border-radius: var(--clui-radius, 0);
 		border-width: 0.0625rem;
 		border-style: solid;
