@@ -20,12 +20,33 @@
 	}: Props = $props();
 </script>
 
-<select class:borderless bind:value {...props}>
-	<!-- svelte-ignore slot_element_deprecated -->
-	<slot />
-</select>
+<div class="wrapper">
+	<select class:borderless bind:value {...props}>
+		<!-- svelte-ignore slot_element_deprecated -->
+		<slot />
+	</select>
+</div>
 
 <style>
+	.wrapper {
+		position: relative;
+		display: inline-flex;
+	}
+
+	.wrapper::after {
+		content: '';
+		position: absolute;
+		right: 0.5rem;
+		top: 50%;
+		width: 0.25rem;
+		height: 0.25rem;
+		pointer-events: none;
+
+		border-right: 0.125rem solid currentColor;
+		border-bottom: 0.125rem solid currentColor;
+		transform: translateY(-50%) rotate(45deg);
+	}
+
 	select {
 		border-radius: var(--clui-radius, 0);
 		border-width: 0.0625rem;
@@ -34,6 +55,9 @@
 		background-color: transparent;
 		color: currentColor;
 		font-size: 0.8rem;
+		text-align: left;
+		appearance: none;
+		padding-right: 1rem;
 	}
 
 	select:not(.borderless) {
@@ -41,6 +65,7 @@
 		background-color: var(--clui-color-base-3);
 		color: var(--clui-color-base-12);
 		padding: var(--clui-padding);
+		padding-right: calc(var(--clui-padding) + 1rem);
 	}
 
 	select[disabled] {
