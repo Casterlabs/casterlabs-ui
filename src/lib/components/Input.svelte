@@ -100,6 +100,7 @@
 		background-color: transparent;
 		color: currentColor;
 		font-size: 0.8rem;
+		vertical-align: middle;
 	}
 
 	input[disabled] {
@@ -114,6 +115,10 @@
 		border-color: var(--clui-color-base-7);
 		background-color: var(--clui-color-base-3);
 		color: var(--clui-color-base-12);
+	}
+
+	input:not(.borderless):not([type='range']):not([type='checkbox']) {
+		padding: calc(var(--clui-padding) * 2.4) calc(var(--clui-padding) * 4);
 	}
 
 	input:not(.borderless)::placeholder {

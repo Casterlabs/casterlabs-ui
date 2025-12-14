@@ -71,6 +71,21 @@ Roundness:
 		document.documentElement.style.setProperty('--clui-radius', newValue + 'px');
 	}}
 />
+Padding:
+<Input
+	type="number"
+	step={0.5}
+	min={0}
+	placeholder="0"
+	borderless
+	style="width: 8ch;"
+	oninput={(e: Event) => {
+		// @ts-ignore
+		const newValue = e.target.value ?? 4;
+		// @ts-ignore
+		document.documentElement.style.setProperty('--clui-padding', newValue + 'px');
+	}}
+/>
 
 <h2>Number Input</h2>
 
@@ -80,8 +95,7 @@ Roundness:
 	step={numberInputStep}
 	min={numberInputMin}
 	max={numberInputMax}
-	placeholder="Borderless"
-	borderless
+	placeholder="Regular"
 />
 <Input
 	type="number"
@@ -89,7 +103,8 @@ Roundness:
 	step={numberInputStep}
 	min={numberInputMin}
 	max={numberInputMax}
-	placeholder="Regular"
+	placeholder="Borderless"
+	borderless
 />
 <Input
 	type="number"
@@ -110,6 +125,33 @@ Roundness:
 	disabled
 />
 
+<h2>Text Input</h2>
+
+<Input type="text" bind:value={textInputValue} placeholder="Regular" />
+<Input type="text" bind:value={textInputValue} placeholder="Borderless" borderless />
+<Input type="text" bind:value={textInputValue} placeholder="Readonly" readonly />
+<Input type="text" bind:value={textInputValue} placeholder="Disabled" disabled />
+
+<h2>Select</h2>
+
+<Select>
+	<option value="" disabled selected>Regular</option>
+	<option> option 1 </option>
+	<option> option 2 </option>
+	<option> option 3 </option>
+</Select>
+
+<h2>Button</h2>
+
+<Button onclick={() => alert('Clicked!')}>Regular</Button>
+<Button onclick={() => alert('Clicked!')} borderless>Borderless</Button>
+<Button onclick={() => alert('Clicked!')} disabled>Disabled</Button>
+
+<h2>Checkbox</h2>
+
+<Input type="checkbox" bind:checked={checkboxInputValue} />
+<Input type="checkbox" bind:checked={checkboxInputValue} disabled />
+
 <h2>Range Input</h2>
 
 <Input
@@ -126,44 +168,8 @@ Roundness:
 	step={numberInputStep}
 	min={numberInputMin}
 	max={numberInputMax}
-	borderless
-/>
-
-<Input
-	type="range"
-	bind:value={numberInputValue}
-	step={numberInputStep}
-	min={numberInputMin}
-	max={numberInputMax}
 	disabled
 />
-
-<h2>Text Input</h2>
-
-<Input type="text" bind:value={textInputValue} placeholder="Borderless" borderless />
-<Input type="text" bind:value={textInputValue} placeholder="Regular" />
-<Input type="text" bind:value={textInputValue} placeholder="Readonly" readonly />
-<Input type="text" bind:value={textInputValue} placeholder="Disabled" disabled />
-
-<h2>Checkbox</h2>
-
-<Input type="checkbox" bind:checked={checkboxInputValue} />
-<Input type="checkbox" bind:checked={checkboxInputValue} disabled />
-
-<h2>Select</h2>
-
-<Select>
-	<option value="" disabled selected>Select an option...</option>
-	<option> option 1 </option>
-	<option> option 2 </option>
-	<option> option 3 </option>
-</Select>
-
-<h2>Button</h2>
-
-<Button onclick={() => alert('Clicked!')} borderless>Borderless</Button>
-<Button onclick={() => alert('Clicked!')}>Regular</Button>
-<Button onclick={() => alert('Clicked!')} disabled>Disabled</Button>
 
 <h2>Box</h2>
 
@@ -322,6 +328,6 @@ Has focus?
 
 <style>
 	h2 {
-		margin-top: 4rem;
+		margin-top: 1rem;
 	}
 </style>
