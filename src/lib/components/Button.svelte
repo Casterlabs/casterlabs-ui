@@ -51,7 +51,7 @@
 		border-color: var(--clui-color-base-7);
 		background-color: var(--clui-color-base-3);
 		color: var(--clui-color-base-12);
-		padding: calc(var(--clui-padding) * 1.6) calc(var(--clui-padding) * 4);
+		padding: var(--clui-padding);
 		box-sizing: border-box;
 	}
 

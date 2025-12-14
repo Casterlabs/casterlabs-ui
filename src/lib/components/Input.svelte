@@ -118,7 +118,7 @@
 	}
 
 	input:not(.borderless):not([type='range']):not([type='checkbox']) {
-		padding: calc(var(--clui-padding) * 2.4) calc(var(--clui-padding) * 4);
+		padding: var(--clui-padding);
 	}
 
 	input:not(.borderless)::placeholder {
