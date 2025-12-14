@@ -18,23 +18,31 @@
 		value = $bindable(),
 		...props
 	}: Props = $props();
+
+	let propsWithoutStyling = $derived.by(() => {
+		return { ...props, class: undefined, style: undefined };
+	});
+
+	let propsOnlyStyling = $derived.by(() => {
+		return { class: props.class, style: props.style };
+	});
 </script>
 
-<div class="wrapper">
-	<select class:borderless bind:value {...props}>
+<div class:borderless class:disabled={props.disabled} {...propsOnlyStyling}>
+	<select class:borderless bind:value {...propsWithoutStyling}>
 		<!-- svelte-ignore slot_element_deprecated -->
 		<slot />
 	</select>
 </div>
 
 <style>
-	.wrapper {
+	div {
 		position: relative;
 		display: inline-block;
 		line-height: 0;
 	}
 
-	.wrapper::after {
+	div::after {
 		content: '';
 		position: absolute;
 		right: 0.5rem;
@@ -48,8 +56,7 @@
 		transform: translateY(-50%) rotate(45deg);
 	}
 
-	select {
-		line-height: normal;
+	div {
 		border-radius: var(--clui-radius, 0);
 		border-width: 0.0625rem;
 		border-style: solid;
@@ -58,39 +65,52 @@
 		color: currentColor;
 		font-size: 0.8rem;
 		text-align: left;
-		appearance: none;
-		padding-right: 1rem;
 	}
 
-	select:not(.borderless) {
+	div:not(.borderless) {
 		border-color: var(--clui-color-base-7);
 		background-color: var(--clui-color-base-3);
 		color: var(--clui-color-base-12);
-		padding: var(--clui-padding);
-		padding-right: calc(var(--clui-padding, 0) + 1rem);
 	}
 
-	select[disabled] {
+	div.disabled {
 		color: var(--clui-color-base-11);
-		cursor: not-allowed;
 	}
 
 	/* Hover */
 
-	select:not(.borderless):not([readonly]):not([disabled]):hover {
+	div:not(.borderless):not(.disabled):hover {
 		border-color: var(--clui-color-base-8);
 	}
 
 	/* Focus */
 
-	select:focus {
-		outline: none;
-	}
-
-	select:not(.borderless):not([readonly]):not([type='range']):focus {
+	div:not(.borderless):focus-within {
 		outline-width: 0.125rem;
 		outline-style: solid;
 		outline-color: var(--clui-color-accent-8);
 		border-color: var(--clui-color-base-2);
+	}
+
+	/* Mangling the select */
+
+	select {
+		line-height: normal;
+		color: currentColor;
+		background-color: transparent;
+		border: none;
+		outline: none;
+		appearance: none;
+		padding-right: 1rem;
+	}
+
+	select:not(.borderless) {
+		background-color: var(--clui-color-base-3);
+		padding: var(--clui-padding);
+		padding-right: calc(var(--clui-padding, 0) + 1rem);
+	}
+
+	select[disabled] {
+		cursor: not-allowed;
 	}
 </style>
