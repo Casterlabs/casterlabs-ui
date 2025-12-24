@@ -102,6 +102,7 @@
 		outline: none;
 		appearance: none;
 		padding-right: 1rem;
+		border-radius: var(--clui-radius, 0);
 	}
 
 	select:not(.borderless) {
