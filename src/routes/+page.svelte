@@ -11,6 +11,8 @@
 		Select
 	} from '$lib/index.js';
 
+	import TextArea from '$lib/components/TextArea.svelte';
+
 	const SCROLL_ITEMS = 1000;
 
 	let numberInputValue = 0;
@@ -131,6 +133,13 @@ Padding:
 <Input type="text" bind:value={textInputValue} placeholder="Borderless" borderless />
 <Input type="text" bind:value={textInputValue} placeholder="Readonly" readonly />
 <Input type="text" bind:value={textInputValue} placeholder="Disabled" disabled />
+
+<h2>Text Area</h2>
+
+<TextArea bind:value={textInputValue} placeholder="Regular" />
+<TextArea bind:value={textInputValue} placeholder="Borderless" borderless />
+<TextArea bind:value={textInputValue} placeholder="Readonly" readonly />
+<TextArea bind:value={textInputValue} placeholder="Disabled" disabled />
 
 <h2>Select</h2>
 
