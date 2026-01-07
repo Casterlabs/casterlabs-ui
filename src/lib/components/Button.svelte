@@ -1,5 +1,7 @@
 <script lang="ts" module>
-	interface Props {
+	import type { HTMLButtonAttributes } from 'svelte/elements';
+
+	interface Props extends HTMLButtonAttributes {
 		id?: string;
 
 		class?: string;
@@ -10,7 +12,6 @@
 		 */
 		borderless?: boolean;
 		disabled?: boolean;
-		onclick?: () => void;
 	}
 </script>
 
@@ -22,11 +23,12 @@
 		style,
 		borderless = false,
 		disabled = false,
-		onclick
+
+		...props
 	}: Props = $props();
 </script>
 
-<button {id} {disabled} {style} class={clazz} class:borderless {onclick}>
+<button {id} {disabled} {style} class={clazz} class:borderless {...props}>
 	<!-- svelte-ignore slot_element_deprecated -->
 	<slot />
 </button>
