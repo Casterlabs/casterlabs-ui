@@ -1,4 +1,5 @@
 <script lang="ts" module>
+	import { onMount } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	interface Props extends HTMLInputAttributes {
@@ -56,6 +57,13 @@
 
 		inputElement.dispatchEvent(new Event('change', { bubbles: true }));
 	}
+
+	onMount(() => {
+		if (type == 'checkbox' && checked) {
+			// I have no idea. ._.
+			inputElement.checked = checked;
+		}
+	});
 </script>
 
 {#if type == 'checkbox'}
