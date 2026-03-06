@@ -17,5 +17,5 @@ export { default as FocusTrap } from '$lib/helpers/FocusTrap.svelte';
 export { default as LongPressListener } from '$lib/helpers/LongPressListener.svelte';
 
 /** @deprecated Use NativeSelect instead */
-const Select = NativeSelect;
+const Select: typeof NativeSelect = NativeSelect;
 export { Select };
