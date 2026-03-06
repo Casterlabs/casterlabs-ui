@@ -15,23 +15,32 @@
 
 	const SCROLL_ITEMS = 1000;
 
-	let numberInputValue = 0;
+	let pageZoom = $state(16);
+	let roundness = $state(2);
+	let padding = $state(2);
+
+	$effect(() => {
+		document.documentElement.style.fontSize = pageZoom + 'px';
+		document.documentElement.style.setProperty('--clui-radius', roundness + 'px');
+		document.documentElement.style.setProperty('--clui-padding', padding + 'px');
+	});
+
+	let numberInputValue = $state(0);
 	let numberInputStep = 1;
 	let numberInputMin = 0;
 	let numberInputMax = 100;
 
-	let textInputValue = '';
+	let textInputValue = $state('');
 
-	let checkboxInputValue = false;
+	let checkboxInputValue = $state(false);
 
-	let isScrollerAtBottom = true;
+	let isScrollerAtBottom = $state(true);
 	let scroller: InvertedScroller;
 
-	let dynamicListBleed = 300;
 	let dynamicList1: DynamicList;
 	let dynamicList2: DynamicList;
 
-	let focusTrapHasFocus: boolean = false;
+	let focusTrapHasFocus: boolean = $state(false);
 </script>
 
 {#snippet itemRenderer(item: number | string)}
@@ -52,11 +61,7 @@ Page Zoom:
 	placeholder="16"
 	borderless
 	style="width: 8ch;"
-	oninput={(e: Event) => {
-		// @ts-ignore
-		const newValue = e.target.value ?? 16;
-		document.documentElement.style.fontSize = newValue + 'px';
-	}}
+	bind:value={pageZoom}
 />
 Roundness:
 <Input
@@ -66,12 +71,7 @@ Roundness:
 	placeholder="0"
 	borderless
 	style="width: 8ch;"
-	oninput={(e: Event) => {
-		// @ts-ignore
-		const newValue = e.target.value ?? 4;
-		// @ts-ignore
-		document.documentElement.style.setProperty('--clui-radius', newValue + 'px');
-	}}
+	bind:value={roundness}
 />
 Padding:
 <Input
@@ -81,12 +81,7 @@ Padding:
 	placeholder="0"
 	borderless
 	style="width: 8ch;"
-	oninput={(e: Event) => {
-		// @ts-ignore
-		const newValue = e.target.value ?? 4;
-		// @ts-ignore
-		document.documentElement.style.setProperty('--clui-padding', newValue + 'px');
-	}}
+	bind:value={padding}
 />
 
 <h2>Number Input</h2>
@@ -259,14 +254,7 @@ Is at bottom?
 </p>
 
 <p>
-	Bleed: <Input
-		type="number"
-		bind:value={dynamicListBleed}
-		step={10}
-		min={0}
-		style="width: calc(0.85ch * {(dynamicListBleed || 0).toString()
-			.length} + .25rem); appearance: textfield;"
-	/>%
+	Bleed: 300%
 	<Button
 		onclick={() => {
 			dynamicList1.jumpToStart();
@@ -278,43 +266,41 @@ Is at bottom?
 </p>
 
 <div style="display: flex; flex-direction: row; width: 100%; height: 10rem;">
-	{#key dynamicListBleed}
-		<Box style="flex: 1; height: 100%; padding: 0;" sides={['top', 'bottom', 'left', 'right']}>
-			<DynamicList
-				bind:this={dynamicList1}
-				startWith={[
-					'This is an regular DynamicList (in a Box)',
-					...Array(SCROLL_ITEMS).keys(),
-					'(end of list)'
-				]}
-				bleed={dynamicListBleed / 100}
-				{itemRenderer}
-			>
-				<!-- 
+	<Box style="flex: 1; height: 100%; padding: 0;" sides={['top', 'bottom', 'left', 'right']}>
+		<DynamicList
+			bind:this={dynamicList1}
+			startWith={[
+				'This is an regular DynamicList (in a Box)',
+				...Array(SCROLL_ITEMS).keys(),
+				'(end of list)'
+			]}
+			bleed={3}
+			{itemRenderer}
+		>
+			<!-- 
 				You can also:
 					{#snippet itemRenderer(item: any)}
 						...
 					{/snippet} 
 				-->
-			</DynamicList>
-		</Box>
-		<Box
-			style="flex: 1; height: 100%; padding: 0; overflow-y: auto;"
-			sides={['top', 'bottom', 'right']}
-		>
-			<DynamicList
-				bind:this={dynamicList2}
-				inverted
-				startWith={[
-					'(start of list)',
-					...Array(SCROLL_ITEMS).keys(),
-					'This is an inverted DynamicList (in a Box)'
-				]}
-				bleed={dynamicListBleed / 100}
-				{itemRenderer}
-			/>
-		</Box>
-	{/key}
+		</DynamicList>
+	</Box>
+	<Box
+		style="flex: 1; height: 100%; padding: 0; overflow-y: auto;"
+		sides={['top', 'bottom', 'right']}
+	>
+		<DynamicList
+			bind:this={dynamicList2}
+			inverted
+			startWith={[
+				'(start of list)',
+				...Array(SCROLL_ITEMS).keys(),
+				'This is an inverted DynamicList (in a Box)'
+			]}
+			bleed={3}
+			{itemRenderer}
+		/>
+	</Box>
 </div>
 
 <h2>FocusTrap</h2>
