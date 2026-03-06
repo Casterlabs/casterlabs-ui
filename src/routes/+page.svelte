@@ -8,12 +8,22 @@
 		Input,
 		InvertedScroller,
 		LongPressListener,
-		Select
+		VirtualSelect,
+		type VirtualSelectOption
 	} from '$lib/index.js';
 
+	import NativeSelect from '$lib/components/NativeSelect.svelte';
 	import TextArea from '$lib/components/TextArea.svelte';
 
 	const SCROLL_ITEMS = 1000;
+
+	const SELECT_OPTIONS: VirtualSelectOption[] = [
+		{ value: 1, label: 'Option 1' },
+		{ value: 2, label: 'Option 2' },
+		{ value: 3, label: 'Option 3' },
+		{ value: 4, label: 'Option 4 (disabled)', disabled: true },
+		{ value: 5, label: 'Option 5 (styled)', style: 'color: salmon;' }
+	];
 
 	let pageZoom = $state(16);
 	let roundness = $state(2);
@@ -31,6 +41,8 @@
 	let numberInputMax = 100;
 
 	let textInputValue = $state('');
+
+	let selectValue = $state('');
 
 	let checkboxInputValue = $state(false);
 
@@ -136,28 +148,50 @@ Padding:
 <TextArea bind:value={textInputValue} placeholder="Readonly" readonly />
 <TextArea bind:value={textInputValue} placeholder="Disabled" disabled />
 
-<h2>Select</h2>
+<h2>Native Select</h2>
 
-<Select>
+<NativeSelect bind:value={selectValue}>
 	<option value="" disabled selected>Regular</option>
-	<option> option 1 </option>
-	<option> option 2 </option>
-	<option> option 3 </option>
-</Select>
 
-<Select borderless>
-	<option value="" disabled selected>Regular</option>
-	<option> option 1 </option>
-	<option> option 2 </option>
-	<option> option 3 </option>
-</Select>
+	{#each SELECT_OPTIONS as option}
+		<option value={option.value} disabled={option.disabled} style={option.style}>
+			{option.label}
+		</option>
+	{/each}
+</NativeSelect>
 
-<Select disabled>
-	<option value="" disabled selected>Regular</option>
-	<option> option 1 </option>
-	<option> option 2 </option>
-	<option> option 3 </option>
-</Select>
+<NativeSelect borderless bind:value={selectValue}>
+	<option value="" disabled selected>Borderless</option>
+
+	{#each SELECT_OPTIONS as option}
+		<option value={option.value} disabled={option.disabled} style={option.style}>
+			{option.label}
+		</option>
+	{/each}
+</NativeSelect>
+
+<NativeSelect disabled bind:value={selectValue}>
+	<option value="" disabled selected>Disabled</option>
+
+	{#each SELECT_OPTIONS as option}
+		<option value={option.value} disabled={option.disabled} style={option.style}>
+			{option.label}
+		</option>
+	{/each}
+</NativeSelect>
+
+<h2>Virtual Select</h2>
+
+<VirtualSelect placeholder="Regular" options={SELECT_OPTIONS} bind:value={selectValue} />
+
+<VirtualSelect
+	borderless
+	placeholder="Borderless"
+	options={SELECT_OPTIONS}
+	bind:value={selectValue}
+/>
+
+<VirtualSelect disabled placeholder="Disabled" options={SELECT_OPTIONS} />
 
 <h2>Button</h2>
 
